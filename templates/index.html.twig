@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Shopping List
+{% endblock %}
+
+{% block body %}
+    {% for user in users %}
+        <li>{{ user }}</li>
+    {% endfor %}
+{% endblock %}
