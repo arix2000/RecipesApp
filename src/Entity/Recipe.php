@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use AllowDynamicProperties;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,6 +41,29 @@ class Recipe
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageUrl = null;
+
+    public function __construct(
+        User   $user,
+        string $title,
+        string $ingredients,
+        string $directions,
+        string $link,
+        string $source,
+        string $ner,
+        string $site,
+        string $imageUrl
+    )
+    {
+        $this->user = $user;
+        $this->title = $title;
+        $this->ingredients = $ingredients;
+        $this->directions = $directions;
+        $this->link = $link;
+        $this->source = $source;
+        $this->ner = $ner;
+        $this->site = $site;
+        $this->imageUrl = $imageUrl;
+    }
 
     public function getId(): ?int
     {

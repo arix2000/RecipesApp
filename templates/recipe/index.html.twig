@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RecipeController!{% endblock %}
+{% block stylesheets %}
+<style>
+    .recipe-wrapper {
+        margin: 1em auto;
+        max-width: 1300px;
+        width: 95%;
+        font: 18px/1.5 sans-serif;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+    <div class="recipe-wrapper">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for recipe in recipes %}
+                <div>
+                    {% include 'recipe/recipe_item.html.twig' with { recipe: recipe } %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

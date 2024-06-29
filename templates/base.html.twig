@@ -1,16 +1,37 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
-
-        {% block javascripts %}
-        {% endblock %}
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('build/app.css') }}">{% endblock %}
+    {% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.5/dist/alpine.min.js" defer></script>
+</head>
+<body class="bg-gray-900 text-gray-100"> <!-- Set default background and text colors for dark mode -->
+<nav class="bg-gray-800 shadow-md py-4">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+        <div class="text-xl font-bold">
+            <a href="{{ path('recipe') }}">RecipesApp</a>
+        </div>
+        <div class="flex space-x-4">
+            <a href="{{ path('your_recipes') }}" class="text-gray-300 hover:text-white">Your Recipes</a>
+            <a href="{{ path('about') }}" class="text-gray-300 hover:text-white">About</a>
+            <a href="{{ path('search') }}" class="text-gray-300 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+</nav>
+<div class="container mx-auto px-4 py-6">
         {% block body %}{% endblock %}
-    </body>
+</div>
+</body>
 </html>

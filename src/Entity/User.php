@@ -26,6 +26,14 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    public function __construct(string $firstName, string $lastName, string $email, string $password)
+    {
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->email = $email;
+        $this->password = $password;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
