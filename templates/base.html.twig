@@ -10,12 +10,34 @@
     {% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.5/dist/alpine.min.js" defer></script>
+    <style>
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        .shimmer {
+            background: linear-gradient(
+                    to right,
+                    #2d2d2d 0%,
+                    #3c3c3c 20%,
+                    #2d2d2d 40%,
+                    #2d2d2d 100%
+            );
+            background-size: 2000px 100%;
+            animation: shimmer 2s infinite linear;
+        }
+    </style>
 </head>
-<body class="bg-gray-900 text-gray-100"> <!-- Set default background and text colors for dark mode -->
+<body class="bg-gray-900 text-gray-100">
 <nav class="bg-gray-800 shadow-md py-4">
     <div class="container mx-auto px-4 flex justify-between items-center">
         <div class="text-xl font-bold">
-            <a href="{{ path('recipe') }}">RecipesApp</a>
+            <a href="{{ path('recipes') }}">RecipesApp</a>
         </div>
         <div class="flex space-x-4">
             <a href="{{ path('your_recipes') }}" class="text-gray-300 hover:text-white">Your Recipes</a>
