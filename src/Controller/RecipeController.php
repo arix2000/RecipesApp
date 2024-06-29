@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Recipe;
+use App\Form\RecipeFormType;
 use App\Repository\RecipeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +28,14 @@ class RecipeController extends AbstractController
             $recipe->setNer($readableString);
         }, $recipes);
         return $this->render('recipe/index.html.twig', ["recipes" => $recipes]);
+    }
+
+    #[Route('/recipe/create', name: 'create_recipe')]
+    public function createRecipe(): Response
+    {
+        $recipe = new Recipe();
+        $form = $this->createForm(RecipeFormType::class, $recipe);
+        return $this->render("recipe/create.html.twig", ["form" => $form->createView()]);
     }
 
     #[Route('/recipe/{id}', name: 'recipe', methods: ["GET"])]

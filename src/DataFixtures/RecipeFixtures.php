@@ -89,7 +89,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
     private function insertBatch(ObjectManager $manager, array $batch): void
     {
         foreach ($batch as $row) {
-            $recipe = new Recipe(
+            $recipe = Recipe::createFrom(
                 $row['user'],
                 $row['title'],
                 $row['ingredients'],

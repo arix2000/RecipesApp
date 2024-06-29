@@ -3,10 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Recipe;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RecipeFormType extends AbstractType
@@ -14,19 +17,51 @@ class RecipeFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
-            ->add('ingredients')
-            ->add('directions')
-            ->add('link')
-            ->add('source')
-            ->add('ner')
-            ->add('site')
-            ->add('imageUrl')
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
+            ->add('title', TextType::class, [
+                'label' => 'Title',
+                'attr' => ['class' => 'form-input-dark w-full mb-4 bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline']
             ])
-        ;
+            ->add('ingredients', TextareaType::class, [
+                'label' => 'Ingredients',
+                'attr' => ['class' => 'form-textarea-dark w-full mb-4 bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 5]
+            ])
+            ->add('directions', TextareaType::class, [
+                'label' => 'Directions',
+                'attr' => ['class' => 'form-textarea-dark w-full mb-4 bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 8]
+            ])
+            ->add('source', ChoiceType::class, [
+                'label' => 'Source:',
+                'choices' => [
+                    'Gathered' => 'Gathered',
+                    'My Own' => 'My Own',
+                ],
+                'expanded' => false,
+                'multiple' => false,
+                'attr' => ['class' => 'form-radio-dark mb-4 ml-4 bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline'],
+                'data' => 'Gathered', // Default value
+            ])
+            ->add('link', TextType::class, [
+                'label' => 'Link',
+                'required' => false, // Make these fields not required initially
+                'attr' => ['class' => 'form-input-dark w-full mb-4 bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'style' => 'display:none;'],
+                'empty_data' => '',
+            ])
+            ->add('site', TextType::class, [
+                'label' => 'Site',
+                'required' => false, // Make these fields not required initially
+                'attr' => ['class' => 'form-input-dark w-full mb-4 bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'style' => 'display:none;'],
+                'empty_data' => '',
+            ])
+            ->add('ner', TextType::class, [
+                'label' => 'Ner',
+                'required' => true,
+                'attr' => ['class' => 'form-textarea-dark w-full mb-4 bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 8]
+            ])
+            ->add('imageUrl', TextType::class, [
+                'label' => 'Image url',
+                'required' => false,
+                'attr' => ['class' => 'form-textarea-dark w-full mb-4 bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 8]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

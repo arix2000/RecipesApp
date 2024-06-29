@@ -42,7 +42,7 @@ class Recipe
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageUrl = null;
 
-    public function __construct(
+    public static function createFrom(
         User   $user,
         string $title,
         string $ingredients,
@@ -52,17 +52,19 @@ class Recipe
         string $ner,
         string $site,
         string $imageUrl
-    )
+    ): self
     {
-        $this->user = $user;
-        $this->title = $title;
-        $this->ingredients = $ingredients;
-        $this->directions = $directions;
-        $this->link = $link;
-        $this->source = $source;
-        $this->ner = $ner;
-        $this->site = $site;
-        $this->imageUrl = $imageUrl;
+        $recipe = new self();
+        $recipe->setUser($user);
+        $recipe->setTitle($title);
+        $recipe->setIngredients($ingredients);
+        $recipe->setDirections($directions);
+        $recipe->setLink($link);
+        $recipe->setSource($source);
+        $recipe->setNer($ner);
+        $recipe->setSite($site);
+        $recipe->setImageUrl($imageUrl);
+        return $recipe;
     }
 
     public function getId(): ?int
