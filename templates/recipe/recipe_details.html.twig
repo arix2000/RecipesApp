@@ -24,6 +24,7 @@
                         All recipes
                     </button>
                 </a>
+                {% if recipe.user.id == app.user.id or app.user.email == "root@root.com" %}
                 <div class="flex md:flex-row md:ml-auto">
                     <a href="/recipe/edit/{{ recipe.id }}">
                         <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mb-4 flex items-center">
@@ -40,6 +41,7 @@
                         </button>
                     </a>
                 </div>
+                {% endif %}
             </div>
 
             <!-- Recipe Image -->
@@ -68,7 +70,7 @@
                     <p class="text-gray-400">Source: <span class="text-white">{{ recipe.source }}</span></p>
                 {% endif %}
                 {% if recipe.site %}
-                    <p class="text-gray-400">Site: <span class="text-white">{{ recipe.site }}</span></p>
+                    <a href="{{ recipe.link }}" target="_blank" class="text-gray-400">Site: <span class="text-blue-400">{{ recipe.site }}</span></a>
                 {% endif %}
                 <p class="text-gray-400">
                     Submitted by:

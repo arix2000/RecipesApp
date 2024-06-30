@@ -47,7 +47,8 @@ class RecipeController extends AbstractController
     #[Route('/recipe/create', name: 'create_recipe')]
     public function createRecipe(Request $request): Response
     {
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => "root@root.com"]);
+        /** @var User $user */
+        $user = $this->getUser();
         $recipe = new Recipe();
         $form = $this->createForm(RecipeFormType::class, $recipe);
 
@@ -65,8 +66,9 @@ class RecipeController extends AbstractController
     #[Route('/recipe/edit/{id}', name: 'edit_recipe')]
     public function editRecipe($id, Request $request): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
         $recipe = $this->recipeRepository->find($id);
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => "root@root.com"]);
         $recipe->setIngredients(implode(PHP_EOL, json_decode($recipe->getIngredients())));
         $recipe->setDirections(implode(PHP_EOL, json_decode($recipe->getDirections())));
         $recipe->setNer(implode(PHP_EOL, json_decode($recipe->getNer())));
@@ -127,7 +129,8 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/recipe/delete/{id}', name: 'delete_recipe')]
-    public function deleteRecipe($id): Response {
+    public function deleteRecipe($id): Response
+    {
         $recipe = $this->recipeRepository->find($id);
         $this->entityManager->remove($recipe);
         $this->entityManager->flush();
@@ -145,10 +148,10 @@ class RecipeController extends AbstractController
 
         return $this->render('recipe/recipe_details.html.twig',
             [
-                "recipe" => $recipe,
-                "ner" => $ner,
-                "directions" => $directions,
-                "ingredients" => $ingredients,
+                'recipe' => $recipe,
+                'ner' => $ner,
+                'directions' => $directions,
+                'ingredients' => $ingredients,
             ]);
     }
 

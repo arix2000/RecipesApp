@@ -1,0 +1,24 @@
+<div class="flex w-full">
+    <a href="{{ path('app_login') }}" class="w-1/2 text-center text-xl py-2 rounded-ss-3xl
+        {% if current_route == 'app_login' %}
+            bg-blue-700
+        {% else %}
+            bg-gray-500
+        {% endif %}
+    ">
+        <button>
+            Log in
+        </button>
+    </a>
+    <a href="{{ path('app_register') }}" class="w-1/2 text-center text-xl py-2 rounded-se-3xl
+        {% if current_route == 'app_register' %}
+            bg-blue-700
+        {% else %}
+            bg-gray-500
+        {% endif %}
+    ">
+        <button>
+            Sign up
+        </button>
+    </a>
+</div>

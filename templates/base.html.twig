@@ -34,26 +34,23 @@
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100">
-<nav class="bg-gray-800 shadow-md py-4">
+<nav class="bg-gray-800 shadow-md py-2">
     <div class="container mx-auto px-4 flex justify-between items-center">
         <div class="text-xl font-bold">
             <a href="{{ path('recipes') }}">RecipesApp</a>
         </div>
-        <div class="flex space-x-4">
+        <div class="flex space-x-4 items-center">
+            <a href="{{ path('search') }}" class="text-gray-300 hover:text-white">Search</a>
             <a href="{{ path('your_recipes') }}" class="text-gray-300 hover:text-white">Your Recipes</a>
             <a href="{{ path('about') }}" class="text-gray-300 hover:text-white">About</a>
-            <a href="{{ path('search') }}" class="text-gray-300 hover:text-white">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
+            <a href="{{ app.user ? '/logout' : '/login' }}" class="{{ app.user ? 'bg-red-500' : 'bg-blue-500' }} p-2 rounded-lg">
+                {{ app.user ? 'Logout' : 'Login' }}
             </a>
         </div>
     </div>
 </nav>
 <div class="container mx-auto px-4 py-6">
-        {% block body %}{% endblock %}
+    {% block body %}{% endblock %}
 </div>
 </body>
 </html>
