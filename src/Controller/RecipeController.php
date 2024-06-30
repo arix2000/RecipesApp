@@ -81,6 +81,49 @@ class RecipeController extends AbstractController
         return $this->render("recipe/create.html.twig", ["form" => $form->createView()]);
     }
 
+    #[Route('/recipe/edit/{id}', name: 'edit_recipe')]
+    public function editRecipe($id, Request $request): Response
+    {
+        $recipe = $this->recipeRepository->find($id);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => "root@root.com"]);
+        $recipe->setIngredients(implode(PHP_EOL, json_decode($recipe->getIngredients())));
+        $recipe->setDirections(implode(PHP_EOL, json_decode($recipe->getDirections())));
+        $recipe->setNer(implode(PHP_EOL, json_decode($recipe->getNer())));
+        $form = $this->createForm(RecipeFormType::class, $recipe);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            printf($recipe->getIngredients());
+            $recipe = $form->getData();
+            $recipe->setUser($user);
+            $recipe->setIngredients($this->stringToJsonArray($recipe->getIngredients()));
+            $recipe->setDirections($this->stringToJsonArray($recipe->getDirections()));
+            $recipe->setNer($this->stringToJsonArray($recipe->getNer()));
+
+            $imagePath = $form->get('imageUrl')->getData();
+            if ($imagePath) {
+                $newFileName = uniqid() . '.' . $imagePath->guessExtension();
+                try {
+                    $imagePath->move(
+                        $this->getParameter('kernel.project_dir') . '/public/recipe/uploads',
+                        $newFileName
+                    );
+                } catch (FileException $e) {
+                    return new Response($e->getMessage());
+                }
+                $request = $this->requestStack->getCurrentRequest();
+                $hostUrl = $request->getSchemeAndHttpHost();
+                $recipe->setImageUrl($hostUrl . "/recipe/uploads/" . $newFileName);
+            }
+            $this->entityManager->flush();
+            return $this->redirectToRoute('recipes');
+        }
+
+
+        return $this->render("recipe/edit.html.twig", ["form" => $form->createView()]);
+    }
+
+
     function stringToJsonArray($inputString): string
     {
         $normalizedString = str_replace("\r\n", "\n", $inputString);

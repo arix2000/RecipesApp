@@ -77,6 +77,7 @@ class RecipeFormType extends AbstractType
             ->add('imageUrl', FileType::class, [
                 'label' => 'Add image',
                 'required' => false,
+                'mapped' => false,
                 'attr' => ['class' => 'form-textarea-dark w-full mb-4 bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 8]
             ]);
     }

@@ -39,7 +39,6 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
             throw new \Exception('CSV file does not exist or is not readable.');
         }
 
-        // Fetch the user reference
         $this->user = $this->getReference('user_reference');
 
         if (($handle = fopen($csvFile, 'r')) !== false) {
@@ -53,7 +52,6 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
 
                 $row = array_combine($header, $row);
 
-                // Preprocess fields if necessary
                 $row['ingredients'] = json_encode(json_decode($row['ingredients'], true));
                 $row['directions'] = json_encode(json_decode($row['directions'], true));
                 $row['ner'] = json_encode(json_decode($row['ner'], true));
@@ -63,10 +61,10 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
                     'title' => $row['title'],
                     'ingredients' => $row['ingredients'],
                     'directions' => $row['directions'],
-                    'link' => $row['link'],
+                    'link' => "https://" . $row['link'],
                     'source' => $row['source'],
                     'ner' => $row['ner'],
-                    'site' => $row['site'],
+                    'site' => "https://" . $row['site'],
                     'imageUrl' => $this->getRandomImage()
                 ];
 

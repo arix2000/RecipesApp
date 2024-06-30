@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Create New Recipe{% endblock %}
+{% block title %}Edit Recipe{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -107,7 +107,6 @@
                         return labels[i];
                 }
             }
-
             toggleFields();
             sourceField.addEventListener('change', function () {
                 toggleFields();
