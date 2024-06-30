@@ -17,9 +17,23 @@
         <h1 class="text-3xl font-semibold mb-4">Create New Recipe</h1>
 
         {{ form_start(form, {'attr': {'class': 'bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4'}}) }}
-        {{ form_row(form.title) }}
-        {{ form_row(form.ingredients) }}
-        {{ form_row(form.directions) }}
+        {{ form_label(form.title, "Title") }}
+        {{ form_widget(form.title) }}
+        <div class="custom-error mb-4">
+            {{ form_errors(form.title) }}
+        </div>
+
+        {{ form_label(form.ingredients, "Ingredients") }}
+        {{ form_widget(form.ingredients) }}
+        <div class="custom-error mb-4">
+            {{ form_errors(form.ingredients) }}
+        </div>
+
+        {{ form_label(form.directions, "Directions") }}
+        {{ form_widget(form.directions) }}
+        <div class="custom-error mb-4">
+            {{ form_errors(form.directions) }}
+        </div>
 
         <div id="sourceField">
             {{ form_row(form.source) }}
@@ -37,7 +51,12 @@
             {{ form_errors(form.site) }}
         </div>
 
-        {{ form_row(form.ner) }}
+        {{ form_label(form.ner, "Ingredients (no quantities)") }}
+        {{ form_widget(form.ner) }}
+        <div class="custom-error mb-4">
+            {{ form_errors(form.ner) }}
+        </div>
+
         {{ form_row(form.imageUrl) }}
 
         <div class="flex items-center justify-between mt-4">
