@@ -93,7 +93,7 @@ class RecipeController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            printf($recipe->getIngredients());
+            //TODO to be refactored
             $recipe = $form->getData();
             $recipe->setUser($user);
             $recipe->setIngredients($this->stringToJsonArray($recipe->getIngredients()));
@@ -138,6 +138,15 @@ class RecipeController extends AbstractController
         }
         $filteredArray = array_values($filteredArray);
         return json_encode($filteredArray);
+    }
+
+    #[Route('/recipe/delete/{id}', name: 'delete_recipe')]
+    public function deleteRecipe($id): Response {
+        $recipe = $this->recipeRepository->find($id);
+        $this->entityManager->remove($recipe);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('recipes');
     }
 
     #[Route('/recipe/{id}', name: 'recipe', methods: ["GET"])]
