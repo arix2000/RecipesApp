@@ -4,6 +4,14 @@
 
 {% block title %}Create New Recipe{% endblock %}
 
+{% block stylesheets %}
+<style>
+    .custom-error {
+        color: red;
+    }
+</style>
+{% endblock %}
+
 {% block body %}
     <div class="max-w-2xl mx-auto mt-6 px-4">
         <h1 class="text-3xl font-semibold mb-4">Create New Recipe</h1>
@@ -17,9 +25,17 @@
             {{ form_row(form.source) }}
         </div>
 
-        {# Link and Site fields initially hidden with inline style #}
-        {{ form_row(form.link, {'attr': {'style': 'display:none;'}}) }}
-        {{ form_row(form.site, {'attr': {'style': 'display:none;'}}) }}
+        {{ form_label(form.link, 'Link') }}
+        {{ form_widget(form.link, {'attr': {'style': 'display:none;'}}) }}
+        <div class="custom-error mb-4" id="link_error">
+            {{ form_errors(form.link) }}
+        </div>
+
+        {{ form_label(form.site, 'Site') }}
+        {{ form_widget(form.site, {'attr': {'style': 'display:none;'}}) }}
+        <div class="custom-error mb-4" id="site_error">
+            {{ form_errors(form.site) }}
+        </div>
 
         {{ form_row(form.ner) }}
         {{ form_row(form.imageUrl) }}
@@ -37,17 +53,19 @@
             const sourceField = document.getElementById('{{ form.source.vars.id }}');
             const linkField = document.getElementById('{{ form.link.vars.id }}');
             const linkLabel = findLabelForControl({{ form.link.vars.id }})
+            const linkError = document.getElementById('link_error')
             const siteField = document.getElementById('{{ form.site.vars.id }}');
             const siteLabel = findLabelForControl({{ form.site.vars.id }})
+            const siteError = document.getElementById('site_error')
 
-            // Function to toggle visibility and requirement of link and site fields
             function toggleFields() {
-                console.log(sourceField.value)
-                if (sourceField.value === 'My Own') {
+                if (sourceField.value !== 'From website') {
                     linkField.style.display = 'none';
                     siteField.style.display = 'none';
                     linkLabel.style.display = 'none';
                     siteLabel.style.display = 'none';
+                    linkError.style.display = 'none';
+                    siteError.style.display = 'none';
                     linkField.value = null
                     siteField.value = null
                     linkField.removeAttribute('required');
@@ -57,6 +75,8 @@
                     siteField.style.display = 'block';
                     linkLabel.style.display = 'block';
                     siteLabel.style.display = 'block';
+                    linkError.style.display = 'block';
+                    siteError.style.display = 'block';
                     linkField.setAttribute('required', 'required');
                     siteField.setAttribute('required', 'required');
                 }
@@ -70,11 +90,7 @@
                         return labels[i];
                 }
             }
-
-            // Initial call to toggle fields based on initial source value
             toggleFields();
-
-            // Add event listener to source field to toggle fields on change
             sourceField.addEventListener('change', function () {
                 toggleFields();
             });

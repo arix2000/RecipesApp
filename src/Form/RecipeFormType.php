@@ -32,26 +32,30 @@ class RecipeFormType extends AbstractType
             ->add('source', ChoiceType::class, [
                 'label' => 'Source:',
                 'choices' => [
-                    'Gathered' => 'Gathered',
+                    'From website' => 'From website',
+                    'From book' => 'From book',
                     'My Own' => 'My Own',
                 ],
                 'expanded' => false,
                 'multiple' => false,
                 'attr' => ['class' => 'form-radio-dark mb-4 ml-4 bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline'],
-                'data' => 'Gathered', // Default value
+                'data' => 'From website', // Default value
             ])
             ->add('link', TextType::class, [
                 'label' => 'Link',
                 'constraints' => [
                     new Url(['message' => 'This is not a valid URL']),
                 ],
-                'required' => false, // Make these fields not required initially
-                'attr' => ['class' => 'tooltip-trigger form-input-dark w-full mb-4 bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'style' => 'display:none;'],
+                'required' => false,
+                'attr' => ['class' => 'tooltip-trigger form-input-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'style' => 'display:none;'],
             ])
             ->add('site', TextType::class, [
                 'label' => 'Site',
-                'required' => false, // Make these fields not required initially
-                'attr' => ['class' => 'form-input-dark w-full mb-4 bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'style' => 'display:none;'],
+                'required' => false,
+                'constraints' => [
+                    new Url(['message' => 'This is not a valid URL']),
+                ],
+                'attr' => ['class' => 'form-input-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'style' => 'display:none;'],
 
             ])
             ->add('ner', TextType::class, [
