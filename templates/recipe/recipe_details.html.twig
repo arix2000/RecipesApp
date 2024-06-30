@@ -16,15 +16,17 @@
     <div class="recipe-details-wrapper">
         <div class="bg-gray-800 text-white p-6 rounded-2xl shadow-md">
             <div class="flex justify-between">
-                <button onclick="window.history.back()"
-                        class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-4 flex items-center">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    All recipes
-                </button>
+                <a href="{{ path('recipes') }}">
+                    <button
+                            class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-4 flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        All recipes
+                    </button>
+                </a>
                 <div class="flex">
                     <a href="/recipe/edit/{{ recipe.id }}">
                         <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 flex items-center">

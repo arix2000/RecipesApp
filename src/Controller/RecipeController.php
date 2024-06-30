@@ -8,6 +8,7 @@ use App\Form\RecipeFormType;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -53,27 +54,7 @@ class RecipeController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $newRecipe = $form->getData();
-            $newRecipe->setUser($user);
-            $newRecipe->setIngredients($this->stringToJsonArray($newRecipe->getIngredients()));
-            $newRecipe->setDirections($this->stringToJsonArray($newRecipe->getDirections()));
-            $newRecipe->setNer($this->stringToJsonArray($newRecipe->getNer()));
-
-            $imagePath = $form->get('imageUrl')->getData();
-            if ($imagePath) {
-                $newFileName = uniqid() . '.' . $imagePath->guessExtension();
-                try {
-                    $imagePath->move(
-                        $this->getParameter('kernel.project_dir') . '/public/recipe/uploads',
-                        $newFileName
-                    );
-                } catch (FileException $e) {
-                    return new Response($e->getMessage());
-                }
-                $request = $this->requestStack->getCurrentRequest();
-                $hostUrl = $request->getSchemeAndHttpHost();
-                $newRecipe->setImageUrl($hostUrl . "/recipe/uploads/" . $newFileName);
-            }
-
+            $newRecipe = $this->getUpdatedRecipe($newRecipe, $form, $user);
             $this->entityManager->persist($newRecipe);
             $this->entityManager->flush();
             return $this->redirectToRoute('recipes');
@@ -93,34 +74,39 @@ class RecipeController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            //TODO to be refactored
             $recipe = $form->getData();
-            $recipe->setUser($user);
-            $recipe->setIngredients($this->stringToJsonArray($recipe->getIngredients()));
-            $recipe->setDirections($this->stringToJsonArray($recipe->getDirections()));
-            $recipe->setNer($this->stringToJsonArray($recipe->getNer()));
-
-            $imagePath = $form->get('imageUrl')->getData();
-            if ($imagePath) {
-                $newFileName = uniqid() . '.' . $imagePath->guessExtension();
-                try {
-                    $imagePath->move(
-                        $this->getParameter('kernel.project_dir') . '/public/recipe/uploads',
-                        $newFileName
-                    );
-                } catch (FileException $e) {
-                    return new Response($e->getMessage());
-                }
-                $request = $this->requestStack->getCurrentRequest();
-                $hostUrl = $request->getSchemeAndHttpHost();
-                $recipe->setImageUrl($hostUrl . "/recipe/uploads/" . $newFileName);
-            }
+            $this->getUpdatedRecipe($recipe, $form, $user);
             $this->entityManager->flush();
-            return $this->redirectToRoute('recipes');
+            return $this->redirectToRoute('recipe', ["id" => $id]);
         }
 
 
         return $this->render("recipe/edit.html.twig", ["form" => $form->createView()]);
+    }
+
+    function getUpdatedRecipe(Recipe $recipe, FormInterface $form, User $user): Recipe|Response
+    {
+        $recipe->setUser($user);
+        $recipe->setIngredients($this->stringToJsonArray($recipe->getIngredients()));
+        $recipe->setDirections($this->stringToJsonArray($recipe->getDirections()));
+        $recipe->setNer($this->stringToJsonArray($recipe->getNer()));
+
+        $imagePath = $form->get('imageUrl')->getData();
+        if ($imagePath) {
+            $newFileName = uniqid() . '.' . $imagePath->guessExtension();
+            try {
+                $imagePath->move(
+                    $this->getParameter('kernel.project_dir') . '/public/recipe/uploads',
+                    $newFileName
+                );
+            } catch (FileException $e) {
+                return new Response($e->getMessage());
+            }
+            $request = $this->requestStack->getCurrentRequest();
+            $hostUrl = $request->getSchemeAndHttpHost();
+            $recipe->setImageUrl($hostUrl . "/recipe/uploads/" . $newFileName);
+        }
+        return $recipe;
     }
 
 
