@@ -31,14 +31,14 @@ class RecipeFormType extends AbstractType
                 'constraints' => [
                     new NotBlank(message: 'Ingredients is required'),
                 ],
-                'attr' => ['class' => 'form-textarea-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 5]
+                'attr' => ['class' => 'form-textarea-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 5, 'placeholder' => '(Write each ingredient in a separate line)']
             ])
             ->add('directions', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
                     new NotBlank(message: 'Directions is required'),
                 ],
-                'attr' => ['class' => 'form-textarea-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 8]
+                'attr' => ['class' => 'form-textarea-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 8, 'placeholder' => '(Write each direction in a separate line)']
             ])
             ->add('source', ChoiceType::class, [
                 'label' => 'Source:',
@@ -67,12 +67,12 @@ class RecipeFormType extends AbstractType
                 'attr' => ['class' => 'form-input-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'style' => 'display:none;'],
 
             ])
-            ->add('ner', TextType::class, [
+            ->add('ner', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
                     new NotBlank(message: 'Ingredients (no quantities) is required'),
                 ],
-                'attr' => ['class' => 'form-textarea-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 8]
+                'attr' => ['class' => 'form-textarea-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 8, 'placeholder' => '(Write each ingredient in a separate line)']
             ])
             ->add('imageUrl', FileType::class, [
                 'label' => 'Add image',

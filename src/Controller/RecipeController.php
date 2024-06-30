@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Recipe;
+use App\Entity\User;
 use App\Form\RecipeFormType;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -16,11 +18,17 @@ class RecipeController extends AbstractController
 {
     private RecipeRepository $recipeRepository;
     private EntityManagerInterface $entityManager;
+    private RequestStack $requestStack;
 
-    public function __construct(RecipeRepository $recipeRepository, EntityManagerInterface $entityManager)
+    public function __construct(
+        RecipeRepository       $recipeRepository,
+        EntityManagerInterface $entityManager,
+        RequestStack           $requestStack
+    )
     {
         $this->recipeRepository = $recipeRepository;
         $this->entityManager = $entityManager;
+        $this->requestStack = $requestStack;
     }
 
     #[Route('/', name: 'recipes')]
@@ -38,24 +46,32 @@ class RecipeController extends AbstractController
     #[Route('/recipe/create', name: 'create_recipe')]
     public function createRecipe(Request $request): Response
     {
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => "root@root.com"]);
         $recipe = new Recipe();
         $form = $this->createForm(RecipeFormType::class, $recipe);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $newRecipe = $form->getData();
+            $newRecipe->setUser($user);
+            $newRecipe->setIngredients($this->stringToJsonArray($newRecipe->getIngredients()));
+            $newRecipe->setDirections($this->stringToJsonArray($newRecipe->getDirections()));
+            $newRecipe->setNer($this->stringToJsonArray($newRecipe->getNer()));
+
             $imagePath = $form->get('imageUrl')->getData();
             if ($imagePath) {
                 $newFileName = uniqid() . '.' . $imagePath->guessExtension();
                 try {
                     $imagePath->move(
-                        $this->getParameter('kernel.project_dir') . '/public/uploads',
+                        $this->getParameter('kernel.project_dir') . '/public/recipe/uploads',
                         $newFileName
                     );
                 } catch (FileException $e) {
                     return new Response($e->getMessage());
-                } //ADD USER THEN TEST
-                $newRecipe->setImage("uploads/" . $newFileName);
+                }
+                $request = $this->requestStack->getCurrentRequest();
+                $hostUrl = $request->getSchemeAndHttpHost();
+                $newRecipe->setImageUrl($hostUrl . "/recipe/uploads/" . $newFileName);
             }
 
             $this->entityManager->persist($newRecipe);
@@ -63,6 +79,22 @@ class RecipeController extends AbstractController
             return $this->redirectToRoute('recipes');
         }
         return $this->render("recipe/create.html.twig", ["form" => $form->createView()]);
+    }
+
+    function stringToJsonArray($inputString): string
+    {
+        $normalizedString = str_replace("\r\n", "\n", $inputString);
+        $normalizedString = str_replace("\r", "\n", $normalizedString);
+
+        $linesArray = explode("\n", $normalizedString);
+        $filteredArray = array_filter($linesArray, function ($line) {
+            return trim($line) !== '';
+        });
+        if (empty($filteredArray)) {
+            $filteredArray = [$inputString];
+        }
+        $filteredArray = array_values($filteredArray);
+        return json_encode($filteredArray);
     }
 
     #[Route('/recipe/{id}', name: 'recipe', methods: ["GET"])]
