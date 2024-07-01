@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Entity\Recipe;
 use App\Entity\User;
+use App\Model\RecipePagination;
+use App\Repository\RecipeRepository;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,11 +14,32 @@ class RecipeService
 {
     private string $projectDir;
     private string $hostUrl;
+    private RecipeRepository $recipeRepository;
 
-    public function __construct(string $projectDir, string $hostUrl)
+    public function __construct(RecipeRepository $recipeRepository, string $projectDir, string $hostUrl)
     {
         $this->projectDir = $projectDir;
         $this->hostUrl = $hostUrl;
+        $this->recipeRepository = $recipeRepository;
+    }
+
+    function getRecipePagination($request, $paginator): RecipePagination
+    {
+        $queryBuilder = $this->recipeRepository->createQueryBuilder('r');
+
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            24
+        );
+
+        $recipes = [];
+        foreach ($pagination as $recipe) {
+            $readableString = implode(", ", json_decode($recipe->getNer()));
+            $recipe->setNer($readableString);
+            $recipes[] = $recipe->toMap($recipe);
+        }
+        return new RecipePagination($recipes, $pagination);
     }
 
     function getUpdatedRecipe(Recipe $recipe, FormInterface $form, User $user): Recipe|Response

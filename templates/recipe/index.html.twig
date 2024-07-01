@@ -1,27 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RecipeController!{% endblock %}
+{% block title %}Recipes App{% endblock %}
 {% block stylesheets %}
-<style>
-    .recipe-wrapper {
-        margin: 1em auto;
-        max-width: 1300px;
-        width: 95%;
-        font: 18px/1.5 sans-serif;
-    }
-</style>
+    <style>
+        .recipe-wrapper {
+            margin: 1em auto;
+            max-width: 1300px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
     <div class="recipe-wrapper">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for recipe in recipes %}
-                <div>
-                    {% include 'recipe/recipe_item.html.twig' with { recipe: recipe } %}
-                </div>
-            {% endfor %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6" id="recipe-list">
+            {% include 'recipe/recipes_list.html.twig' with {'pagination': pagination} %}
         </div>
     </div>
+    <div id="loading" style="display:none;">Loading...</div>
     <div class="fixed bottom-12 right-16 text-xl">
         <a href="{{ app.user ? '/recipe/create' : path('app_login')}}" class="flex items-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-md">
             <span>Add recipe</span>
@@ -30,4 +27,47 @@
             </svg>
         </a>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let page = {{ pagination.currentPageNumber }};
+            const totalPages = {{ pagination.pageCount }};
+            const recipeList = document.getElementById('recipe-list');
+            const loading = document.getElementById('loading');
+
+            function loadMoreRecipes() {
+                if (page >= totalPages) return;
+
+                loading.style.display = 'block';
+
+                fetch(`/?page=${page + 1}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        recipeList.insertAdjacentHTML('beforeend', data);
+                        loading.style.display = 'none';
+                        page++;
+                        if (page < totalPages) {
+                            attachScrollEvent();
+                        }
+                    });
+            }
+
+            function attachScrollEvent() {
+                window.addEventListener('scroll', onScroll);
+            }
+
+            function onScroll() {
+                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                    window.removeEventListener('scroll', onScroll);
+                    loadMoreRecipes();
+                }
+            }
+
+            attachScrollEvent();
+        });
+    </script>
 {% endblock %}

@@ -41,6 +41,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $user;
     }
 
+    public static function getMap(self $user)
+    {
+        return [
+            'id' => $user->getId(),
+            'firstName' => $user->getFirstName(),
+            'lastName' => $user->getLastName(),
+            'email' => $user->getEmail(),
+        ];
+    }
+
     public function getId(): ?int
     {
         return $this->id;

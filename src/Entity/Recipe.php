@@ -2,10 +2,8 @@
 
 namespace App\Entity;
 
-use AllowDynamicProperties;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 class Recipe
@@ -66,6 +64,22 @@ class Recipe
         $recipe->setSite($site);
         $recipe->setImageUrl($imageUrl);
         return $recipe;
+    }
+
+    public function toMap(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'title' => $this->getTitle(),
+            'ingredients' => $this->getIngredients(),
+            'directions' => $this->getDirections(),
+            'link' => $this->getLink(),
+            'source' => $this->getSource(),
+            'ner' => $this->getNer(),
+            'site' => $this->getSite(),
+            'user' => User::getMap($this->getUser()),
+            'imageUrl' => $this->getImageUrl(),
+        ];
     }
 
     public function getId(): ?int

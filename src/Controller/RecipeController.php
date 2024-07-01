@@ -8,9 +8,8 @@ use App\Form\RecipeFormType;
 use App\Repository\RecipeRepository;
 use App\Services\RecipeService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,19 +32,21 @@ class RecipeController extends AbstractController
         $this->entityManager = $entityManager;
         $request = $requestStack->getCurrentRequest();
         $hostUrl = $request->getSchemeAndHttpHost();
-        $this->recipeService = new RecipeService($projectDir, $hostUrl);
+        $this->recipeService = new RecipeService($recipeRepository, $projectDir, $hostUrl);
     }
 
     #[Route('/', name: 'recipes')]
-    public function recipes(): Response
+    public function recipes(Request $request, PaginatorInterface $paginator): Response
     {
-        $recipes = $this->recipeRepository->findAll();
-        $recipes = array_slice($recipes, 0, 20);
-        array_map(function ($recipe) {
-            $readableString = implode(", ", json_decode($recipe->getNer()));
-            $recipe->setNer($readableString);
-        }, $recipes);
-        return $this->render('recipe/index.html.twig', ["recipes" => $recipes]);
+        $pagination = $this->recipeService->getRecipePagination($request, $paginator)->getPagination();
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('recipe/recipes_list.html.twig', ['pagination' => $pagination]);
+        }
+
+        return $this->render('recipe/index.html.twig', [
+            'pagination' => $pagination,
+        ]);
     }
 
     #[Route('/recipe/create', name: 'create_recipe')]
