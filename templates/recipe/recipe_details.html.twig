@@ -24,7 +24,7 @@
                         All recipes
                     </button>
                 </a>
-                {% if recipe.user.id == app.user.id or app.user.email == "root@root.com" %}
+                {% if app.user and (recipe.user.id == app.user.id or app.user.email == "root@root.com") %}
                 <div class="flex md:flex-row md:ml-auto">
                     <a href="/recipe/edit/{{ recipe.id }}">
                         <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mb-4 flex items-center">

@@ -31,7 +31,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        ini_set('memory_limit', '1536M'); // Increase memory limit to 1GB
+        ini_set('memory_limit', '1536M');
         $this->getImages();
         $csvFile = $this->projectDir . '/var/data/recipes.csv';
 
@@ -102,6 +102,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($recipe);
             printf("\33[2K\r");
             printf("\033[32m    [INFO] Inserting rows: %d / 99592\033[0m", $this->insertedRows);
+            flush();
             $this->insertedRows++;
         }
 
@@ -124,6 +125,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
             $images[$i] = $this->getImage();
             printf("\33[2K\r");
             printf("\033[32m    [INFO] Loading images: %d / 300\033[0m", $i);
+            flush();
         }
         printf("\n");
         $this->images = $images;
