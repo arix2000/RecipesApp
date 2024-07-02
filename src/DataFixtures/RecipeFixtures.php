@@ -6,7 +6,6 @@ use App\Entity\Recipe;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 use React\EventLoop\Loop;
@@ -16,23 +15,22 @@ use function React\Promise\all;
 
 class RecipeFixtures extends Fixture implements DependentFixtureInterface
 {
-    const BATCH_SIZE = 250;
+    const BATCH_SIZE = 100;
     private string $projectDir;
     private array $images;
-    private EntityManagerInterface $entityManager;
     private int $insertedRows = 0;
     private User $user;
 
-    public function __construct(string $projectDir, EntityManagerInterface $entityManager)
+    public function __construct(string $projectDir)
     {
         $this->projectDir = $projectDir;
-        $this->entityManager = $entityManager;
     }
 
     public function load(ObjectManager $manager): void
     {
         ini_set('memory_limit', '1536M');
         $this->getImages();
+        $manager->getConnection()->getConfiguration()->setSQLLogger(null);
         $csvFile = $this->projectDir . '/var/data/recipes.csv';
 
         if (!file_exists($csvFile) || !is_readable($csvFile)) {
