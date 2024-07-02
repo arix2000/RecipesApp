@@ -9,15 +9,16 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
-use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use React\EventLoop\Loop;
+use React\Promise\Promise;
+use React\Promise\PromiseInterface;
+use function React\Promise\all;
 
 class RecipeFixtures extends Fixture implements DependentFixtureInterface
 {
-    const BATCH_SIZE = 20;
+    const BATCH_SIZE = 250;
     private string $projectDir;
     private array $images;
-    private HttpClientInterface $client;
     private EntityManagerInterface $entityManager;
     private int $insertedRows = 0;
     private User $user;
@@ -26,7 +27,6 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
     {
         $this->projectDir = $projectDir;
         $this->entityManager = $entityManager;
-        $this->client = HttpClient::create();
     }
 
     public function load(ObjectManager $manager): void
@@ -40,6 +40,12 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
         }
 
         $this->user = $this->getReference('user_reference');
+
+        $startTime = microtime(true);
+
+        $loop = Loop::get();
+
+        $promises = [];
 
         if (($handle = fopen($csvFile, 'r')) !== false) {
             $header = fgetcsv($handle);
@@ -69,46 +75,61 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
                 ];
 
                 if (count($batch) >= self::BATCH_SIZE) {
-                    $this->insertBatch($manager, $batch);
+                    $promises[] = $this->insertBatchAsync($manager, $batch);
                     $batch = [];
                 }
             }
 
             if (!empty($batch)) {
-                $this->insertBatch($manager, $batch);
+                $promises[] = $this->insertBatchAsync($manager, $batch);
             }
 
             fclose($handle);
         } else {
-            throw new \Exception('Unable to open CSV file.');
+            throw new Exception('Unable to open CSV file.');
         }
+
+        all($promises)->then(function () use ($loop) {
+            $loop->stop();
+        });
+
+        $loop->run();
+        $endTime = microtime(true);
+
+        $elapsedTime = $endTime - $startTime;
+        printf("\n\033[32m    [INFO] Fixture loading completed in %.2f seconds.\033[0m\n", $elapsedTime);
     }
 
-    private function insertBatch(ObjectManager $manager, array $batch): void
+    private function insertBatchAsync(ObjectManager $manager, array $batch): PromiseInterface
     {
-        foreach ($batch as $row) {
-            $recipe = Recipe::createFrom(
-                $row['user'],
-                $row['title'],
-                $row['ingredients'],
-                $row['directions'],
-                $row['link'],
-                $row['source'],
-                $row['ner'],
-                $row['site'],
-                $row['imageUrl']
-            );
+        return new Promise(function () use ($manager, $batch) {
+            try {
+                foreach ($batch as $row) {
+                    $recipe = Recipe::createFrom(
+                        $row['user'],
+                        $row['title'],
+                        $row['ingredients'],
+                        $row['directions'],
+                        $row['link'],
+                        $row['source'],
+                        $row['ner'],
+                        $row['site'],
+                        $row['imageUrl']
+                    );
 
-            $manager->persist($recipe);
-            printf("\33[2K\r");
-            printf("\033[32m    [INFO] Inserting rows: %d / 99592\033[0m", $this->insertedRows);
-            flush();
-            $this->insertedRows++;
-        }
+                    $manager->persist($recipe);
+                    printf("\33[2K\r");
+                    printf("\033[32m    [INFO] Inserting rows: %d / 99592\033[0m", ++$this->insertedRows);
+                }
 
-        $manager->flush();
-        $manager->clear();
-        $this->user = $this->getReference('user_reference');
+                $manager->flush();
+                $manager->clear();
+                $this->user = $this->getReference('user_reference');
+            } catch (Exception $e) {
+                printf($e);
+                exit();
+            }
+        });
     }
 
     private function getRandomImage(): string
@@ -132,10 +153,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
             throw new Exception("Failed to read file: $filePath");
         }
 
-        printf("\033[32m    [INFO] Loaded 2000 images\033[0m");
-
-
-        printf("\n");
+        printf("\033[32m    [INFO] Loaded 2000 images\033[0m\n");
         $this->images = $images;
     }
 
@@ -144,4 +162,3 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
         return [UserFixtures::class];
     }
 }
-
