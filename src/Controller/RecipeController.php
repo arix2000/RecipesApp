@@ -6,6 +6,7 @@ use App\Entity\Recipe;
 use App\Entity\User;
 use App\Form\RecipeFormType;
 use App\Repository\RecipeRepository;
+use App\Services\PagingService;
 use App\Services\RecipeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -21,26 +22,29 @@ class RecipeController extends AbstractController
     private RecipeRepository $recipeRepository;
     private EntityManagerInterface $entityManager;
     private RecipeService $recipeService;
+    private PagingService $pagingService;
 
     public function __construct(
         RecipeRepository       $recipeRepository,
         EntityManagerInterface $entityManager,
         RequestStack           $requestStack,
-        string                 $projectDir
+        string                 $projectDir,
+        PagingService          $pagingService
     )
     {
         $this->recipeRepository = $recipeRepository;
         $this->entityManager = $entityManager;
         $request = $requestStack->getCurrentRequest();
         $hostUrl = $request->getSchemeAndHttpHost();
-        $this->recipeService = new RecipeService($recipeRepository, $projectDir, $hostUrl);
+        $this->recipeService = new RecipeService($projectDir, $hostUrl);
+        $this->pagingService = $pagingService;
     }
 
     #[Route('/', name: 'recipes')]
     public function recipes(Request $request, PaginatorInterface $paginator, SessionInterface $session): Response
     {
         $session->set('backRoute', 'recipes');
-        $pagination = $this->recipeService->getRecipePagination($request, $paginator)->getPagination();
+        $pagination = $this->pagingService->getRecipePagination($request, $paginator)->getPagination();
         if ($request->isXmlHttpRequest()) {
             return $this->render('recipe/recipes_list.html.twig', ['pagination' => $pagination]);
         }
@@ -54,7 +58,7 @@ class RecipeController extends AbstractController
     public function search(Request $request, PaginatorInterface $paginator, SessionInterface $session): Response
     {
         $session->set('backRoute', 'search');
-        $recipePagination = $this->recipeService->getRecipePagination($request, $paginator, true);
+        $recipePagination = $this->pagingService->getRecipePagination($request, $paginator, true);
         $pagination = $recipePagination->getPagination();
         $searchTerm = $recipePagination->getSearchTerm();
 
@@ -81,7 +85,7 @@ class RecipeController extends AbstractController
             $newRecipe = $this->recipeService->getUpdatedRecipe($newRecipe, $form, $user);
             $this->entityManager->persist($newRecipe);
             $this->entityManager->flush();
-            return $this->redirectToRoute('recipes');
+            return $this->redirectToRoute('user_recipes');
         }
         return $this->render("recipe/details/create.html.twig", ["form" => $form->createView()]);
     }
@@ -133,6 +137,9 @@ class RecipeController extends AbstractController
         $ner = implode(", ", json_decode($recipe->getNer()));
         $directions = json_decode($recipe->getDirections());
         $ingredients = json_decode($recipe->getIngredients());
+        $imageUrl = $recipe->getImageUrl();
+        $isValidUrl = filter_var($imageUrl, FILTER_VALIDATE_URL) !== false;
+        $recipe->setImageUrl($isValidUrl ? $imageUrl : null);
 
         return $this->render('recipe/details/recipe_details.html.twig',
             [

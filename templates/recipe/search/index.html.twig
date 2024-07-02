@@ -4,13 +4,14 @@
 
 {% block body %}
     <div class="m-auto max-w-2xl w-11/12">
-        <form id="search-form" method="get" action="{{ path('search') }}"
+        <div id="search-form"
               class="bg-gray-800 p-4 rounded-es-2xl rounded-ee-2xl shadow-lg flex items-center space-x-4">
             <input type="text" id="search-input" name="search" value="{{ searchTerm }}"
                    placeholder="Search for recipes..."
                    class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-        </form>
+        </div>
     </div>
+    <div id="not-found-message"></div>
     {% include 'recipe/recipes_grid_view.html.twig' with {'pagination': pagination} %}
     <script>
         window.pagination = {
@@ -23,6 +24,7 @@
             const searchInput = document.getElementById('search-input');
             let timeout = null;
             const recipeList = document.getElementById('recipe-list');
+            const notFoundMessage = document.getElementById('not-found-message');
 
             searchInput.addEventListener('input', function () {
                 clearTimeout(timeout);
@@ -32,11 +34,21 @@
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest'
                         }
-                    }).then(response => response.text())
+                    })
+                        .then(response => response.text())
                         .then(data => {
+                            if (data.trim() === '') {
+                                notFoundMessage.innerHTML = `
+                    <div class="text-center mt-10 w-full">
+                        <p class="text-lg text-gray-600">No recipes found matching your search.</p>
+                    </div>
+                `;
+                            } else {
+                                notFoundMessage.innerHTML = `<div></div>`
+                            }
                             recipeList.innerHTML = data;
                             window.pagination.endpoint = "/search?search=" + searchTermValue + "&";
-                            localStorage.setItem('scrollPosition', '0'); // Reset scroll position on new search
+
                         });
                 }, 300);
             });

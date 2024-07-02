@@ -5,13 +5,12 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\RecipeRepository;
-use App\Services\RecipeService;
+use App\Services\PagingService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -20,15 +19,30 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class UserController extends AbstractController
 {
-    private RecipeService $service;
+    private PagingService $service;
 
-    public function __construct(RecipeRepository $recipeRepository,
-                                RequestStack     $requestStack,
-                                string           $projectDir)
+    public function __construct(PagingService $service)
     {
-        $request = $requestStack->getCurrentRequest();
-        $hostUrl = $request->getSchemeAndHttpHost();
-        $this->service = new RecipeService($recipeRepository, $projectDir, $hostUrl);
+        $this->service = $service;
+    }
+
+    #[Route('/user/recipes', name: 'user_recipes')]
+    public function yourRecipes(SessionInterface $session, Request $request, PaginatorInterface $paginator): Response
+    {
+        $session->set('backRoute', 'user_recipes');
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $pagination = $this->service->getUserRecipesPagination($user->getId(), $request, $paginator)->getPagination();
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('recipe/recipes_list.html.twig', ['pagination' => $pagination]);
+        }
+
+        return $this->render('/user/your_recipes.html.twig', [
+            'pagination' => $pagination,
+        ]);
     }
 
     #[Route(path: '/login', name: 'app_login')]
@@ -42,13 +56,6 @@ class UserController extends AbstractController
             'error' => $error,
             'current_route' => 'app_login'
         ]);
-    }
-
-    #[Route('/user/recipes', name: 'user_recipes')]
-    public function yourRecipes(SessionInterface $session): Response
-    {
-        $session->set('backRoute', 'your_recipes');
-        return $this->render('/user/your_recipes.html.twig', []);
     }
 
     #[Route('/register', name: 'app_register')]

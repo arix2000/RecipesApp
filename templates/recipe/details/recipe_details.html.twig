@@ -54,27 +54,24 @@
                 {% endif %}
             </div>
 
-            <!-- Recipe Image -->
             <div class="recipe-image mb-4 relative">
-                <div class="w-full h-64 bg-gray-700 rounded-lg flex items-center justify-center text-gray-500 shimmer absolute top-0 left-0 z-10"
-                     id="shimmer-{{ recipe.id }}">
-                    Loading...
-                </div>
                 {% if recipe.imageUrl %}
+                    <div class="w-full h-64 bg-gray-700 rounded-2xl flex items-center justify-center text-gray-500 shimmer absolute top-0 left-0 z-10"
+                         id="shimmer-{{ recipe.id }}">
+                        Loading...
+                    </div>
                     <img src="{{ recipe.imageUrl }}" alt="{{ recipe.title }}"
                          class="w-full h-64 object-cover rounded-2xl"
                          onload="document.getElementById('shimmer-{{ recipe.id }}').style.display='none'">
                 {% else %}
-                    <div class="w-full h-64 bg-gray-700 rounded-lg flex items-center justify-center text-gray-500">
+                    <div class="w-full h-64 bg-gray-700 rounded-2xl flex items-center justify-center text-gray-500">
                         No Image Available
                     </div>
                 {% endif %}
             </div>
 
-            <!-- Recipe Title -->
             <h1 class="text-3xl font-bold mb-4">{{ recipe.title }}</h1>
 
-            <!-- Recipe Metadata -->
             <div class="mb-6">
                 {% if recipe.source %}
                     <p class="text-gray-400">Source: <span class="text-white">{{ recipe.source }}</span></p>
@@ -95,7 +92,6 @@
                 </p>
             </div>
 
-            <!-- Recipe Ingredients -->
             <div class="mb-6">
                 <h2 class="text-2xl font-bold mb-2">Ingredients</h2>
                 <ul class="list-disc pl-5">
@@ -105,7 +101,6 @@
                 </ul>
             </div>
 
-            <!-- Recipe Directions -->
             <div class="mb-6">
                 <h2 class="text-2xl font-bold mb-2">Directions</h2>
                 <ul class="list-disc pl-5">
@@ -115,7 +110,6 @@
                 </ul>
             </div>
 
-            <!-- Recipe NER -->
             <div class="mb-6">
                 <h2 class="text-2xl font-bold mb-2">Contains</h2>
                 <p class="text-gray-400">{{ ner }}</p>

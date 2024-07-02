@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\RecipeRepository;
+use App\Services\PagingService;
 use App\Services\RecipeService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,22 +14,19 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ApiRecipeController extends AbstractController
 {
-    private RecipeService $recipeService;
+    private PagingService $pagingService;
 
     public function __construct(
-        RecipeRepository $recipeRepository,
-        RequestStack     $requestStack,
-        string           $projectDir)
+        PagingService $pagingService
+    )
     {
-        $request = $requestStack->getCurrentRequest();
-        $hostUrl = $request->getSchemeAndHttpHost();
-        $this->recipeService = new RecipeService($recipeRepository, $projectDir, $hostUrl);
+        $this->pagingService = $pagingService;
     }
 
     #[Route('/api/recipes', name: 'api_recipes', methods: ['GET'])]
     public function apiRecipes(Request $request, PaginatorInterface $paginator): JsonResponse
     {
-        $recipePagination = $this->recipeService->getRecipePagination($request, $paginator);
+        $recipePagination = $this->pagingService->getRecipePagination($request, $paginator);
         $recipes = $recipePagination->getRecipes();
         $pagination = $recipePagination->getPagination();
 
