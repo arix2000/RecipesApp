@@ -42,14 +42,14 @@
         <div class="flex space-x-4 items-center">
             <a href="{{ path('search') }}" class="text-gray-300 hover:text-white">Search</a>
             <a href="{{ path('your_recipes') }}" class="text-gray-300 hover:text-white">Your Recipes</a>
-            <a href="{{ path('about') }}" class="text-gray-300 hover:text-white">About</a>
-            <a href="{{ app.user ? '/logout' : '/login' }}" class="{{ app.user ? 'bg-red-500' : 'bg-blue-500' }} p-2 rounded-lg">
+            <a href="{{ app.user ? '/logout' : '/login' }}"
+               class="{{ app.user ? 'bg-red-600' : 'bg-blue-600' }} {{ app.user ? 'hover:bg-red-700' : 'hover:bg-blue-700' }} p-2 px-4 rounded-lg">
                 {{ app.user ? 'Logout' : 'Login' }}
             </a>
         </div>
     </div>
 </nav>
-<div class="container mx-auto px-4 py-6">
+<div class="container mx-auto px-4">
     {% block body %}{% endblock %}
 </div>
 </body>

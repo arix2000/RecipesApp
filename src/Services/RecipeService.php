@@ -23,9 +23,17 @@ class RecipeService
         $this->recipeRepository = $recipeRepository;
     }
 
-    function getRecipePagination($request, $paginator): RecipePagination
+    function getRecipePagination($request, $paginator, $bySearchQuery = false): RecipePagination
     {
         $queryBuilder = $this->recipeRepository->createQueryBuilder('r');
+
+        $searchTerm = $request->query->get('search', '');
+        if ($bySearchQuery) {
+            if (!empty($searchTerm)) {
+                $queryBuilder->andWhere('LOWER(r.title) LIKE LOWER(:searchTerm)')
+                    ->setParameter('searchTerm', '%' . $searchTerm . '%');
+            }
+        }
 
         $pagination = $paginator->paginate(
             $queryBuilder,
@@ -39,7 +47,7 @@ class RecipeService
             $recipe->setNer($readableString);
             $recipes[] = $recipe->toMap($recipe);
         }
-        return new RecipePagination($recipes, $pagination);
+        return new RecipePagination($recipes, $pagination, $searchTerm);
     }
 
     function getUpdatedRecipe(Recipe $recipe, FormInterface $form, User $user): Recipe|Response
