@@ -120,35 +120,23 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
 
     private function getImages(): void
     {
-        $images = array();
-        for ($i = 1; $i <= 300; $i++) {
-            $images[$i] = $this->getImage();
-            printf("\33[2K\r");
-            printf("\033[32m    [INFO] Loading images: %d / 300\033[0m", $i);
-            flush();
+        $filePath = $this->projectDir . '/var/data/image_urls.txt';
+
+        if (!file_exists($filePath)) {
+            throw new Exception("File not found: $filePath");
         }
+
+        $images = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+        if ($images === false) {
+            throw new Exception("Failed to read file: $filePath");
+        }
+
+        printf("\033[32m    [INFO] Loaded 2000 images\033[0m");
+
+
         printf("\n");
         $this->images = $images;
-    }
-
-    private function getImage(): ?string
-    {
-        $url = 'https://foodish-api.com/api/';
-
-        try {
-            $response = $this->client->request('GET', $url);
-            $statusCode = $response->getStatusCode();
-            $content = $response->getContent();
-
-            if ($statusCode === 200) {
-                $data = json_decode($content, true);
-                return (string)$data["image"];
-            } else {
-                throw new Exception("Failed to fetch data. Status code: $statusCode");
-            }
-        } catch (Exception $e) {
-            throw new Exception('An error occurred: ' . $e->getMessage());
-        }
     }
 
     public function getDependencies(): array
