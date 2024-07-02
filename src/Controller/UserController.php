@@ -2,16 +2,90 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\RegistrationFormType;
+use App\Repository\RecipeRepository;
+use App\Services\RecipeService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class UserController extends AbstractController
 {
-    #[Route('/user', name: 'app_user')]
-    public function index(): Response
+    private RecipeService $service;
+
+    public function __construct(RecipeRepository $recipeRepository,
+                                RequestStack     $requestStack,
+                                string           $projectDir)
     {
-        return $this->render('index.html.twig');
+        $request = $requestStack->getCurrentRequest();
+        $hostUrl = $request->getSchemeAndHttpHost();
+        $this->service = new RecipeService($recipeRepository, $projectDir, $hostUrl);
+    }
+
+    #[Route(path: '/login', name: 'app_login')]
+    public function login(AuthenticationUtils $authenticationUtils): Response
+    {
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('user/authentication/login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error,
+            'current_route' => 'app_login'
+        ]);
+    }
+
+    #[Route('/user/recipes', name: 'user_recipes')]
+    public function yourRecipes(SessionInterface $session): Response
+    {
+        $session->set('backRoute', 'your_recipes');
+        return $this->render('/user/your_recipes.html.twig', []);
+    }
+
+    #[Route('/register', name: 'app_register')]
+    public function register(
+        Request                     $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        Security                    $security,
+        EntityManagerInterface      $entityManager
+    ): Response
+    {
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+            return $security->login($user, 'form_login', 'main');
+        }
+
+        return $this->render('user/authentication/register.html.twig', [
+            'registrationForm' => $form,
+            'current_route' => 'app_register',
+        ]);
+    }
+
+    #[Route(path: '/logout', name: 'app_logout')]
+    public function logout()
+    {
+
     }
 }

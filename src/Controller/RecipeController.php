@@ -143,11 +143,4 @@ class RecipeController extends AbstractController
                 'isFromEditPage' => $isFromEditPage,
             ]);
     }
-
-    #[Route('/your-recipes', name: 'your_recipes')]
-    public function yourRecipes(SessionInterface $session): Response
-    {
-        $session->set('backRoute', 'your_recipes');
-        return $this->render('');
-    }
 }
