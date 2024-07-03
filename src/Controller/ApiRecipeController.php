@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\RecipeRepository;
+use App\Services\ApiFormatter;
 use App\Services\PagingService;
 use App\Services\RecipeService;
 use Knp\Component\Pager\PaginatorInterface;
@@ -15,12 +16,15 @@ use Symfony\Component\Routing\Attribute\Route;
 class ApiRecipeController extends AbstractController
 {
     private PagingService $pagingService;
+    private ApiFormatter $apiFormatter;
 
     public function __construct(
-        PagingService $pagingService
+        PagingService $pagingService,
+        ApiFormatter  $apiFormatter
     )
     {
         $this->pagingService = $pagingService;
+        $this->apiFormatter = $apiFormatter;
     }
 
     #[Route('/api/recipes', name: 'api_recipes', methods: ['GET'])]
@@ -30,7 +34,7 @@ class ApiRecipeController extends AbstractController
         $recipes = $recipePagination->getRecipes();
         $pagination = $recipePagination->getPagination();
 
-        return $this->json([
+        $data = [
             'items' => $recipes,
             'pagination' => [
                 'current_page' => $pagination->getCurrentPageNumber(),
@@ -38,6 +42,8 @@ class ApiRecipeController extends AbstractController
                 'items_per_page' => $pagination->getItemNumberPerPage(),
                 'total_pages' => ceil($pagination->getTotalItemCount() / $pagination->getItemNumberPerPage()),
             ],
-        ]);
+        ];
+
+        return $this->apiFormatter->formatResponse($data);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Model\RecipePagination;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\QueryBuilder;
+use Knp\Component\Pager\PaginatorInterface;
 
 class PagingService
 {
@@ -15,33 +16,26 @@ class PagingService
         $this->recipeRepository = $recipeRepository;
     }
 
-    function getRecipePagination($request, $paginator, $bySearchQuery = false): RecipePagination
+    function getRecipePagination($request, PaginatorInterface $paginator, $bySearchQuery = false): RecipePagination
     {
-        $queryBuilder = $this->getQueryBuilder();
+        $query = $this->recipeRepository->createQueryBuilder('r');
 
         $searchTerm = $request->query->get('search', '');
         if ($bySearchQuery) {
             if (!empty($searchTerm)) {
-                $queryBuilder->andWhere('LOWER(r.title) LIKE LOWER(:searchTerm)')
-                    ->setParameter('searchTerm', '%' . $searchTerm . '%');
+                $query = $this->recipeRepository->findByTermQuery($searchTerm);
             }
         }
 
-        return $this->getPaginatedData($queryBuilder, $paginator, $request, $searchTerm);
+        return $this->getPaginatedData($query, $paginator, $request, $searchTerm);
     }
 
-    function getUserRecipesPagination(int $userId, $request, $paginator): RecipePagination
+    function getUserRecipesPagination(int $userId, $request, PaginatorInterface $paginator): RecipePagination
     {
-        $queryBuilder = $this->getQueryBuilder();
-        $queryBuilder->andWhere('r.user = :userId')
-            ->setParameter('userId', $userId);
-
-        return $this->getPaginatedData($queryBuilder, $paginator, $request);
-    }
-
-    private function getQueryBuilder(): QueryBuilder
-    {
-        return $this->recipeRepository->createQueryBuilder('r');
+        return $this->getPaginatedData(
+            $this->recipeRepository->findByUserQuery($userId),
+            $paginator,
+            $request);
     }
 
     private function getPaginatedData(
