@@ -3,6 +3,11 @@ echo -e "\033[33m\n [WARNING] Before running this script make sure that docker s
 npm run dev
 docker-compose down
 docker-compose up -d --build
+docker-compose exec app php bin/console doctrine:schema:drop --force --no-interaction > /dev/null 2>&1
+docker-compose exec app php bin/console doctrine:migrations:version --delete --all --no-interaction > /dev/null 2>&1
+docker-compose exec app php bin/console doctrine:schema:create --no-interaction > /dev/null 2>&1
+docker-compose exec app php bin/console make:migration --no-interaction
+docker-compose exec app php bin/console doctrine:migrations:migrate --no-interaction
 echo -e "\n [NOTE] Loading fixtures... it may take a while."
 docker-compose exec app php bin/console doctrine:fixtures:load --no-interaction
 echo -e "\n\nvisit to see beautiful app: http://localhost/  | or http://0.0.0.0/  for some browsers"

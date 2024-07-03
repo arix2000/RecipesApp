@@ -34,14 +34,8 @@ COPY . .
 
 COPY php.ini /usr/local/etc/php/conf.d/php.ini
 
-# Copy entrypoint script
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-
 # Install application dependencies
 RUN composer install
 
 # Expose port 9000
 EXPOSE 9000
-
-# Set the entrypoint
-ENTRYPOINT ["sh", "/usr/local/bin/entrypoint.sh"]
