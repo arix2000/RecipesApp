@@ -3,7 +3,9 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-    <div class="max-w-2xl mx-auto mt-6 px-4">
+    <img src="{{ asset('build/images/spagetti.jpg') }}" alt="" class="absolute inset-0 w-full h-full object-cover z-0">
+    <div class="absolute inset-0 bg-blue-950 opacity-65 z-0"></div>
+    <div class="relative z-10 max-w-2xl mx-auto mt-6 px-4">
         {% include 'user/authentication/auth_buttons.html.twig' %}
         <form method="post" class="bg-gray-800 shadow-md rounded-b-3xl px-8 pt-6 pb-8 mb-4">
             {% if error %}
@@ -18,16 +20,15 @@
                 </div>
             {% endif %}
             <label for="username">Email</label>
-            <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control mb-6 form-input-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline"
+            <input type="email" value="{{ last_username }}" name="_username" id="username"
+                   class="form-control mb-6 form-input-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline"
                    autocomplete="email" required autofocus>
             <label for="password">Password</label>
-            <input type="password" name="_password" id="password" class="form-control mb-6 form-input-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline"
-                   autocomplete="current-password"
-                   required>
+            <input type="password" name="_password" id="password"
+                   class="form-control mb-6 form-input-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline"
+                   autocomplete="current-password" required>
 
-            <input type="hidden" name="_csrf_token"
-                   value="{{ csrf_token('authenticate') }}"
-            >
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
             <div class="checkbox mb-3">
                 <input type="checkbox" name="_remember_me" id="_remember_me">
                 <label for="_remember_me">Remember me</label>
@@ -40,4 +41,5 @@
             </div>
         </form>
     </div>
+
 {% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Enum\UserRole;
 use App\Form\RegistrationFormType;
 use App\Repository\RecipeRepository;
 use App\Services\PagingService;
@@ -78,7 +79,7 @@ class UserController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            $user->setRole('ROLE_USER');
+            $user->setRole(UserRole::ROLE_USER);
             $entityManager->persist($user);
             $entityManager->flush();
             return $security->login($user, 'form_login', 'main');
