@@ -3,9 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Enum\UserRole;
 use App\Form\RegistrationFormType;
-use App\Repository\RecipeRepository;
+use App\Model\UserRole;
 use App\Services\PagingService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;

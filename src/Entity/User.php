@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Enum\UserRole;
+use App\Model\UserRole;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
