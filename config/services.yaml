@@ -29,8 +29,6 @@ services:
   App\Command\:
     resource: '../src/Command'
     tags: [ 'console.command' ]
-    bind:
-      $projectDir: '%kernel.project_dir%'
 
   App\DataFixtures\RecipeFixtures:
     arguments:

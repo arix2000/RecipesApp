@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\UserRole;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -30,18 +31,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    #[ORM\Column(length: 255)]
+    private ?UserRole $role = UserRole::ROLE_USER;
 
-    public static function from(string $firstName, string $lastName, string $email, string $password): self
+
+    public static function from(string $firstName, string $lastName, string $email, string $password, UserRole $role): self
     {
         $user = new self();
         $user->setFirstName($firstName);
         $user->setLastName($lastName);
         $user->setEmail($email);
         $user->setPassword($password);
+        $user->setRole($role);
         return $user;
     }
 
-    public static function getMap(self $user)
+    public static function getMap(self $user): array
     {
         return [
             'id' => $user->getId(),
@@ -104,9 +109,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getRole(): UserRole
+    {
+        return $this->role;
+    }
+
+    public function setRole(UserRole $role): void
+    {
+        $this->role = $role;
+    }
+
     public function getRoles(): array
     {
-        return [];
+        return [$this->role->value];
     }
 
     public function eraseCredentials(): void
