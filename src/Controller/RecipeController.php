@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Translation\LocaleSwitcher;
 
 class RecipeController extends AbstractController
 {
@@ -29,7 +30,7 @@ class RecipeController extends AbstractController
         EntityManagerInterface $entityManager,
         RequestStack           $requestStack,
         string                 $projectDir,
-        PagingService          $pagingService
+        PagingService          $pagingService,
     )
     {
         $this->recipeRepository = $recipeRepository;
@@ -40,7 +41,7 @@ class RecipeController extends AbstractController
         $this->pagingService = $pagingService;
     }
 
-    #[Route('/recipes', name: 'recipes')]
+    #[Route('/', name: 'recipes')]
     public function recipes(Request $request, PaginatorInterface $paginator, SessionInterface $session): Response
     {
         $session->set('backRoute', 'recipes');

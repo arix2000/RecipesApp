@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -88,6 +89,16 @@ class UserController extends AbstractController
             'registrationForm' => $form,
             'current_route' => 'app_register',
         ]);
+    }
+
+
+     #[Route("/switch-locale/{locale}", "switch_locale")]
+    public function switchLocale($locale, Request $request): RedirectResponse
+    {
+        $request->getSession()->set('_locale', $locale);
+
+        $referer = $request->headers->get('referer');
+        return new RedirectResponse($referer ?: '/');
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

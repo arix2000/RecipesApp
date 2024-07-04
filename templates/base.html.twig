@@ -31,6 +31,13 @@
             background-size: 2000px 100%;
             animation: shimmer 2s infinite linear;
         }
+
+        .selected-locale {
+            border-radius: 0.75rem;
+            background: #005cbf;
+        }
+        .not-selected-locale {}
+
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100">
@@ -52,6 +59,16 @@
             </div>
         </div>
     </nav>
+</div>
+<div class="absolute flex bg-gray-800 rounded-es-2xl shadow-xl rounded-ee-2xl p-2 z-20 ml-auto right-10">
+    <a class="relative text-gray-300 hover:text-white mr-1 p-2 {{ app.locale == 'en' ? 'selected-locale' : 'not-selected-locale' }}"
+       href="{{ path('switch_locale', {'locale': 'en'}) }}">
+        {% include 'svg/flag-en.svg' %}
+    </a>
+    <a class="relative text-gray-300 hover:text-white p-2 {{ app.locale == 'en' ? 'not-selected-locale' : 'selected-locale' }}"
+       href="{{ path('switch_locale', {'locale': 'pl'}) }}">
+        {% include 'svg/flag-pl.svg' %}
+    </a>
 </div>
 {% block body %}{% endblock %}
 </body>
