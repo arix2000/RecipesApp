@@ -40,7 +40,7 @@ class RecipeController extends AbstractController
         $this->pagingService = $pagingService;
     }
 
-    #[Route('/', name: 'recipes')]
+    #[Route('/recipes', name: 'recipes')]
     public function recipes(Request $request, PaginatorInterface $paginator, SessionInterface $session): Response
     {
         $session->set('backRoute', 'recipes');

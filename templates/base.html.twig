@@ -39,15 +39,15 @@
         <div class="container mx-auto px-4 flex justify-between items-center">
             <a href="{{ path('recipes') }}" class="text-2xl font-bold flex items-center">
                 <img class="size-12 mr-4" src="{{ asset('build/images/recipeAppIcon.png') }}" alt="AppLogo">
-                RecipesApp
+                {{ 'recipesApp'|trans }}
             </a>
             <div class="flex space-x-4 items-center">
-                <a href="{{ path('search') }}" class="text-gray-300 hover:text-white">Search</a>
+                <a href="{{ path('search') }}" class="text-gray-300 hover:text-white">{{ 'search'|trans }}</a>
                 <a href="{{ app.user ? path('user_recipes') : path('app_login') }}"
-                   class="text-gray-300 hover:text-white">Your Recipes</a>
+                   class="text-gray-300 hover:text-white">{{ 'yourRecipes'|trans }}</a>
                 <a href="{{ app.user ? path('app_logout') : path('app_login') }}"
                    class="{{ app.user ? 'bg-red-600' : 'bg-blue-600' }} {{ app.user ? 'hover:bg-red-700' : 'hover:bg-blue-700' }} p-2 px-4 rounded-lg">
-                    {{ app.user ? 'Logout' : 'Login' }}
+                    {{ app.user ? 'logout'|trans : 'login'|trans }}
                 </a>
             </div>
         </div>

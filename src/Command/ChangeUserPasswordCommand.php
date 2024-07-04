@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,6 +13,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand("app:change-user-password", "Change the password of an existing user")]
 class ChangeUserPasswordCommand extends Command
 {
     protected static $defaultName = 'app:change-user-password';
@@ -27,9 +29,7 @@ class ChangeUserPasswordCommand extends Command
 
     protected function configure(): void
     {
-        $this->setName('app:change-user-password')
-            ->setDescription('Change the password of an existing user')
-            ->setHelp('This command allows you to change the password of an existing user');
+        $this->setHelp('This command allows you to change the password of an existing user');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
