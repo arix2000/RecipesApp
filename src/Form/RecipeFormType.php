@@ -12,36 +12,44 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Url;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RecipeFormType extends AbstractType
 {
+    private TranslatorInterface $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $t = $this->translator;
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Title',
                 'required' => false,
                 'constraints' => [
-                    new NotBlank(message: 'Title is required'),
+                    new NotBlank(message: $t->trans('titleIsRequired')),
                 ],
                 'attr' => ['class' => 'form-input-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline']
             ])
             ->add('ingredients', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new NotBlank(message: 'Ingredients is required'),
+                    new NotBlank(message: $t->trans('ingredientsIsRequired')),
                 ],
                 'attr' => ['class' => 'form-textarea-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 5, 'placeholder' => '(Write each ingredient in a separate line)']
             ])
             ->add('directions', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new NotBlank(message: 'Directions is required'),
+                    new NotBlank(message: $t->trans('directionsIsRequired')),
                 ],
                 'attr' => ['class' => 'form-textarea-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 8, 'placeholder' => '(Write each direction in a separate line)']
             ])
             ->add('source', ChoiceType::class, [
-                'label' => 'Source:',
+                'label' => 'sourceDetailsLabel',
                 'choices' => [
                     'From website' => 'From website',
                     'From book' => 'From book',
@@ -54,7 +62,7 @@ class RecipeFormType extends AbstractType
             ])
             ->add('link', TextType::class, [
                 'constraints' => [
-                    new Url(['message' => 'This is not a valid URL']),
+                    new Url(['message' => $t->trans('linkIsNotUrl')]),
                 ],
                 'required' => false,
                 'attr' => ['class' => 'tooltip-trigger form-input-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'style' => 'display:none;'],
@@ -62,7 +70,7 @@ class RecipeFormType extends AbstractType
             ->add('site', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Url(['message' => 'This is not a valid URL']),
+                    new Url(['message' => $t->trans('linkIsNotUrl')]),
                 ],
                 'attr' => ['class' => 'form-input-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'style' => 'display:none;'],
 
@@ -70,12 +78,12 @@ class RecipeFormType extends AbstractType
             ->add('ner', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new NotBlank(message: 'Ingredients (no quantities) is required'),
+                    new NotBlank(message:$t->trans('nerIsRequired')),
                 ],
                 'attr' => ['class' => 'form-textarea-dark w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 8, 'placeholder' => '(Write each ingredient in a separate line)']
             ])
             ->add('imageUrl', FileType::class, [
-                'label' => 'Add image',
+                'label' => 'addImageLabel',
                 'required' => false,
                 'mapped' => false,
                 'attr' => ['class' => 'form-textarea-dark w-full mb-4 bg-gray-800 text-gray-100 border border-gray-600 rounded-md px-3 py-2 leading-tight focus:outline-none focus:shadow-outline', 'rows' => 8]

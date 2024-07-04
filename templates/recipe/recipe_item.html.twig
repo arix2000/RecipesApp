@@ -9,23 +9,23 @@
                      onload="document.getElementById('shimmer-{{ recipe.id }}').style.display='none'"
                      onerror="this.style.display='none'; document.getElementById('error-placeholder-{{ recipe.id }}').style.display='flex'; document.getElementById('shimmer-{{ recipe.id }}').style.display='none'">
                 <div id="error-placeholder-{{ recipe.id }}" class="w-full h-48 bg-gray-700 rounded-lg flex items-center justify-center text-gray-500" style="display: none;">
-                    No Image Available
+                    {{ 'noImageFound'|trans }}
                 </div>
             {% else %}
                 <div class="w-full h-48 bg-gray-700 rounded-lg flex items-center justify-center text-gray-500">
-                    No Image Available
+                    {{ 'noImageFound'|trans }}
                 </div>
             {% endif %}
         </div>
         <div class="recipe-content">
             <h3 class="text-xl font-bold mb-2 line-clamp-1">{{ recipe.title }}</h3>
             <p class="text-gray-400 mb-2 line-clamp-3">
-                <span class="font-bold">Contains: </span>{{ recipe.ner }}
+                <span class="font-bold">{{ 'recipeItemContains'|trans }}</span>{{ recipe.ner }}
             </p>
             <p class="text-gray-400">
                 ~
                 {% if recipe.user.email == 'root@root.com' %}
-                    Admins
+                    {{ 'adminsText'|trans }}
                 {% else %}
                     {{ recipe.user.firstName }} {{ recipe.user.lastName }}
                 {% endif %}

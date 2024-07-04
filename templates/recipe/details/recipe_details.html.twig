@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ recipe.title }} | Recipe Details{% endblock %}
+{% block title %}{{ 'recipeDetailsTitle'|trans({'%title%': recipe.title}) }}{% endblock %}
 {% block stylesheets %}
     <style>
         .recipe-details-wrapper {
@@ -32,7 +32,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
-                    All recipes
+                    {{ 'backFromDetailsBtnText'|trans }}
                 </button>
                 {% if app.user and (recipe.user.id == app.user.id or app.user.role == 'ROLE_ADMIN') %}
                     <div class="flex md:flex-row md:ml-auto">
@@ -40,14 +40,14 @@
                             <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mb-4 flex items-center">
                                 {% include 'recipe/details/edit.svg.twig' %}
                                 <div class="ml-2"></div>
-                                Edit Recipe
+                                {{ 'editRecipeBtn'|trans }}
                             </button>
                         </a>
                         <a href="/recipe/delete/{{ recipe.id }}">
                             <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg flex items-center ml-4">
                                 {% include 'recipe/details/delete.svg.twig' %}
                                 <div class="ml-2"></div>
-                                Delete Recipe
+                                {{ 'deleteRecipeBtn'|trans }}
                             </button>
                         </a>
                     </div>
@@ -58,14 +58,14 @@
                 {% if recipe.imageUrl %}
                     <div class="w-full h-64 bg-gray-700 rounded-2xl flex items-center justify-center text-gray-500 shimmer absolute top-0 left-0 z-10"
                          id="shimmer-{{ recipe.id }}">
-                        Loading...
+                        {{ 'loadingText'|trans }}
                     </div>
                     <img src="{{ recipe.imageUrl }}" alt="{{ recipe.title }}"
                          class="w-full h-64 object-cover rounded-2xl"
                          onload="document.getElementById('shimmer-{{ recipe.id }}').style.display='none'">
                 {% else %}
                     <div class="w-full h-64 bg-gray-700 rounded-2xl flex items-center justify-center text-gray-500">
-                        No Image Available
+                        {{ 'noImageFound'|trans }}
                     </div>
                 {% endif %}
             </div>
@@ -74,17 +74,19 @@
 
             <div class="mb-6">
                 {% if recipe.source %}
-                    <p class="text-gray-400">Source: <span class="text-white">{{ recipe.source }}</span></p>
+                    <p class="text-gray-400">{{ 'sourceDetailsLabel'|trans }}<span
+                                class="text-white">{{ recipe.source }}</span></p>
                 {% endif %}
                 {% if recipe.site %}
-                    <a href="{{ recipe.link }}" target="_blank" class="text-gray-400">Site: <span
+                    <a href="{{ recipe.link }}" target="_blank" class="text-gray-400">{{ 'siteDetailsLablel'|trans }}
+                        <span
                                 class="text-blue-400">{{ recipe.site }}</span></a>
                 {% endif %}
                 <p class="text-gray-400">
-                    Submitted by:
+                    {{ 'userDetailsLabel'|trans }}
                     <span class="text-white">
                     {% if recipe.user.email == 'root@root.com' %}
-                        Admins
+                        {{ 'adminsText'|trans }}
                     {% else %}
                         {{ recipe.user.firstName }} {{ recipe.user.lastName }}
                     {% endif %}
@@ -93,7 +95,7 @@
             </div>
 
             <div class="mb-6">
-                <h2 class="text-2xl font-bold mb-2">Ingredients</h2>
+                <h2 class="text-2xl font-bold mb-2">{{ 'ingredientsLabel'|trans }}</h2>
                 <ul class="list-disc pl-5">
                     {% for ingredient in ingredients %}
                         <li>{{ ingredient }}</li>
@@ -102,7 +104,7 @@
             </div>
 
             <div class="mb-6">
-                <h2 class="text-2xl font-bold mb-2">Directions</h2>
+                <h2 class="text-2xl font-bold mb-2">{{ 'directionsLabel'|trans }}</h2>
                 <ul class="list-disc pl-5">
                     {% for direction in directions %}
                         <li>{{ direction }}</li>
@@ -111,7 +113,7 @@
             </div>
 
             <div class="mb-6">
-                <h2 class="text-2xl font-bold mb-2">Contains</h2>
+                <h2 class="text-2xl font-bold mb-2">{{ 'detailsContains'|trans }}</h2>
                 <p class="text-gray-400">{{ ner }}</p>
             </div>
         </div>

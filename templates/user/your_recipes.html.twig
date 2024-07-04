@@ -1,23 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recipes App - Your Recipes{% endblock %}
+{% block title %}{{ 'yourRecipesTabTitle'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container mx-auto p-4">
-        <h1 class="m-auto max-w-7xl w-11/12 text-2xl font-bold mb-4">Your Recipes</h1>
+        <h1 class="m-auto max-w-7xl w-11/12 text-2xl font-bold mb-4"></h1>
         {% if pagination.items|length > 0 %}
             {% include 'recipe/recipes_grid_view.html.twig' with {'pagination': pagination} %}
         {% else %}
             <div class="text-center mt-10">
-                <p class="text-lg text-gray-600">No recipes found for this user.</p>
+                <p class="text-lg text-gray-600">{{ 'userRecipesNotFound'|trans }}</p>
                 <a href="{{ path('create_recipe') }}"
-                   class="mt-4 inline-block px-4 py-2 bg-blue-500 text-white rounded-md">Create a new recipe</a>
+                   class="mt-4 inline-block px-4 py-2 bg-blue-500 text-white rounded-md">{{ 'createNewRecipe'|trans }}</a>
             </div>
         {% endif %}
         <div class="fixed bottom-12 right-16 text-lg">
             <a href="{{ app.user ? '/recipe/create' : path('app_login') }}"
                class="flex items-center bg-blue-600 hover:bg-blue-700 font-bold py-2 px-4 rounded-xl shadow-md">
-                <span>Add recipe</span>
+                <span>{{ 'addRecipeBtn'|trans }}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>

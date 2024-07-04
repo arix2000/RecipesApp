@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Recipe{% endblock %}
+{% block title %}{{ 'editRecipeTitle'|trans }}{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -12,22 +12,22 @@
 
 {% block body %}
     <div class="max-w-2xl mx-auto mt-6 px-4">
-        <h1 class="text-3xl font-semibold mb-4">Create New Recipe</h1>
+        <h1 class="text-3xl font-semibold mb-4">{{ 'editRecipeTitle'|trans }}</h1>
 
         {{ form_start(form, {'attr': {'class': 'bg-gray-800 shadow-md rounded-3xl px-8 pt-6 pb-8 mb-4'}}) }}
-        {{ form_label(form.title, "Title") }}
+        {{ form_label(form.title, 'titleLabel'|trans) }}
         {{ form_widget(form.title) }}
         <div class="custom-error mb-4">
             {{ form_errors(form.title) }}
         </div>
 
-        {{ form_label(form.ingredients, "Ingredients") }}
+        {{ form_label(form.ingredients, 'ingredientsLabel'|trans) }}
         {{ form_widget(form.ingredients) }}
         <div class="custom-error mb-4">
             {{ form_errors(form.ingredients) }}
         </div>
 
-        {{ form_label(form.directions, "Directions") }}
+        {{ form_label(form.directions, 'directionsLabel'|trans) }}
         {{ form_widget(form.directions) }}
         <div class="custom-error mb-4">
             {{ form_errors(form.directions) }}
@@ -37,19 +37,19 @@
             {{ form_row(form.source) }}
         </div>
 
-        {{ form_label(form.link, 'Link') }}
+        {{ form_label(form.link, 'linkLabel'|trans) }}
         {{ form_widget(form.link, {'attr': {'style': 'display:none;'}}) }}
         <div class="custom-error mb-4" id="link_error">
             {{ form_errors(form.link) }}
         </div>
 
-        {{ form_label(form.site, 'Site') }}
+        {{ form_label(form.site, 'siteLabel'|trans) }}
         {{ form_widget(form.site, {'attr': {'style': 'display:none;'}}) }}
         <div class="custom-error mb-4" id="site_error">
             {{ form_errors(form.site) }}
         </div>
 
-        {{ form_label(form.ner, "Ingredients (no quantities)") }}
+        {{ form_label(form.ner, 'ingredientsNoQuantitiesLabel'|trans) }}
         {{ form_widget(form.ner) }}
         <div class="custom-error mb-4">
             {{ form_errors(form.ner) }}
@@ -59,7 +59,7 @@
 
         <div class="flex items-center justify-end mt-4">
             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Save Recipe
+                {{ 'saveButton'|trans }}
             </button>
         </div>
         {{ form_end(form) }}
@@ -107,6 +107,7 @@
                         return labels[i];
                 }
             }
+
             toggleFields();
             sourceField.addEventListener('change', function () {
                 toggleFields();

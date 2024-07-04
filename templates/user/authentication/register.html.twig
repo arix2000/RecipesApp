@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}{{ 'registerText'|trans }}{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -17,25 +17,25 @@
         {% include 'user/authentication/auth_buttons.html.twig' %}
         {{ form_start(registrationForm, {'attr': {'class': 'bg-gray-800 shadow-md rounded-b-3xl px-8 pt-6 pb-8 mb-4'}}) }}
 
-        {{ form_label(registrationForm.firstName, "First name") }}
+        {{ form_label(registrationForm.firstName, 'firstNameLabel'|trans) }}
         {{ form_widget(registrationForm.firstName) }}
         <div class="custom-error mb-4">
             {{ form_errors(registrationForm.firstName) }}
         </div>
 
-        {{ form_label(registrationForm.lastName, "Last name") }}
+        {{ form_label(registrationForm.lastName, 'lastNameLabel'|trans) }}
         {{ form_widget(registrationForm.lastName) }}
         <div class="custom-error mb-4">
             {{ form_errors(registrationForm.lastName) }}
         </div>
 
-        {{ form_label(registrationForm.email, "Email") }}
+        {{ form_label(registrationForm.email,  'emailLabel'|trans) }}
         {{ form_widget(registrationForm.email) }}
         <div class="custom-error mb-4">
             {{ form_errors(registrationForm.email) }}
         </div>
 
-        {{ form_label(registrationForm.plainPassword, "Password") }}
+        {{ form_label(registrationForm.plainPassword, 'passwordLabel'|trans) }}
         {{ form_widget(registrationForm.plainPassword) }}
         <div class="custom-error mb-4">
             {{ form_errors(registrationForm.plainPassword) }}
@@ -43,7 +43,7 @@
 
         <div class="flex items-center justify-end mt-4 rounded-lg">
             <button type="submit" class="bg-blue-600 rounded-lg hover:bg-blue-700 text-white font-bold py-2 px-4">
-                Register
+                {{ 'registerText'|trans }}
             </button>
         </div>
         {{ form_end(registrationForm) }}

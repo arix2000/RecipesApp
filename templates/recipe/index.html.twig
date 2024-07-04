@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recipes App{% endblock %}
+{% block title %}{{ 'recipesApp'|trans }}{% endblock %}
 
 {% block body %}
     {% include 'recipe/recipes_grid_view.html.twig' with {'pagination': pagination} %}
     <div class="fixed bottom-12 right-16 text-lg">
         <a href="{{ app.user ? '/recipe/create' : path('app_login') }}"
            class="flex items-center bg-blue-600 hover:bg-blue-700 font-bold py-2 px-4 rounded-xl shadow-md">
-            <span>Add recipe</span>
+            <span>{{ 'addRecipeBtn'|trans }}</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24"
                  stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
