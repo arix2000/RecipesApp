@@ -27,6 +27,7 @@ security:
       logout:
         path: app_logout
         target: /
+        invalidate_session: false
 
       remember_me:
         secret: '%kernel.secret%'
