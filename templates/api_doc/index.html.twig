@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ApiDocController!{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto py-8 max-w-7xl">
+        <h1 class="text-4xl font-bold mb-8 text-gray-100">API Documentation</h1>
+        {% for endpoint in endpoints %}
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg mb-6">
+                <h2 class="text-2xl font-semibold mb-2 text-gray-100">{{ endpoint.name }}</h2>
+                <p class="text-lg mb-2 text-gray-100"><strong>Method:</strong> <span
+                            class="text-gray-300">{{ endpoint.method }}</span></p>
+                <p class="text-lg mb-2 text-gray-100"><strong>URL:</strong> <span
+                            class="text-gray-300">{{ endpoint.url }}</span></p>
+                {% if endpoint.headers %}
+                    <h3 class="text-xl font-semibold mt-4 text-gray-100">Headers:</h3>
+                    <ul class="list-disc list-inside text-gray-300">
+                        {% for header in endpoint.headers %}
+                            <li>{{ header.key }}: {{ header.value }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if endpoint.body %}
+                    <h3 class="text-xl font-semibold mt-4 text-gray-100">Body:</h3>
+                    <div class="overflow-hidden break-words">
+                        <div class="bg-gray-700 p-4 rounded text-gray-100 whitespace-pre-wrap">{{ endpoint.body }}</div>
+                    </div>
+                {% endif %}
+                {% if endpoint.response %}
+                    <h3 class="text-xl font-semibold mt-4 text-gray-100">Responses:</h3>
+                    {% for response in endpoint.response %}
+                        <div class="bg-gray-700 p-4 rounded mb-2 text-gray-100 ">
+                            <p><strong>Status:</strong> {{ response.status }}</p>
+                            <div class="bg-gray-700 p-4 rounded text-gray-100 whitespace-pre-wrap">{{ response.body }}</div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

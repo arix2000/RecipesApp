@@ -4,93 +4,107 @@ namespace App\Tests\Service;
 
 use App\Entity\Recipe;
 use App\Entity\User;
-use App\Model\UiRecipe;
+use App\Model\SourceChoices;
 use App\Services\RecipeService;
 use PHPUnit\Framework\TestCase;
 
 class RecipeServiceTest extends TestCase
 {
+    private RecipeService $recipeService;
+
+    protected function setUp(): void
+    {
+        $this->recipeService = new RecipeService();
+    }
+
     public function testStringToJsonArray()
     {
-        $projectDir = '/tmp';
-        $hostUrl = 'http://localhost';
-        $recipeService = new RecipeService($projectDir, $hostUrl);
-
         $inputString = "line1\nline2\nline3";
         $expectedOutput = json_encode(['line1', 'line2', 'line3']);
 
-        $output = $recipeService->stringToJsonArray($inputString);
+        $output = $this->recipeService->stringToJsonArray($inputString);
 
         $this->assertJsonStringEqualsJsonString($expectedOutput, $output);
     }
 
-    public function testPrepareForShow()
+    public function testValidateAndConvertRecipeWithValidData()
     {
-        $projectDir = '/tmp';
-        $hostUrl = 'http://localhost';
-        $recipeService = new RecipeService();
         $user = new User();
-        $user->setEmail('test@example.com');
+        $data = [
+            'title' => 'Test Recipe',
+            'ingredients' => 'Ingredient 1, Ingredient 2',
+            'directions' => 'Step 1, Step 2',
+            'link' => 'https://example.com',
+            'source' => SourceChoices::WEB->name,
+            'ner' => 'NER data',
+            'site' => 'https://example.com',
+            'imageUrl' => 'https://example.com/image.jpg'
+        ];
 
-        $recipe = new Recipe();
-        $recipe->setId(1);
-        $recipe->setTitle('Test Recipe');
-        $recipe->setNer(json_encode(['ingredient1', 'ingredient2']));
-        $recipe->setDirections(json_encode(['step1', 'step2']));
-        $recipe->setIngredients(json_encode(['ingredient1', 'ingredient2']));
-        $recipe->setLink('http://example.com');
-        $recipe->setSource('Book');
-        $recipe->setSite('example.com');
-        $recipe->setUser($user);
-        $recipe->setImageUrl('http://example.com/image.jpg');
+        $recipe = $this->recipeService->validateAndConvertRecipe($data, $user);
 
-        $uiRecipe = $recipeService->prepareForShow($recipe);
-
-        $this->assertInstanceOf(UiRecipe::class, $uiRecipe);
-        $this->assertEquals(1, $uiRecipe->getId());
-        $this->assertEquals('Test Recipe', $uiRecipe->getTitle());
-        $this->assertEquals(['ingredient1', 'ingredient2'], $uiRecipe->getIngredients());
-        $this->assertEquals(['step1', 'step2'], $uiRecipe->getDirections());
-        $this->assertEquals('http://example.com', $uiRecipe->getLink());
-        $this->assertEquals('Book', $uiRecipe->getSource());
-        $this->assertEquals('ingredient1, ingredient2', $uiRecipe->getNer());
-        $this->assertEquals('example.com', $uiRecipe->getSite());
-        $this->assertEquals($user, $uiRecipe->getUser());
-        $this->assertEquals('http://example.com/image.jpg', $uiRecipe->getImageUrl());
+        $this->assertInstanceOf(Recipe::class, $recipe);
+        $this->assertEquals($data['title'], $recipe->getTitle());
+        $this->assertEquals($data['link'], $recipe->getLink());
+        $this->assertEquals($data['source'], $recipe->getSource());
     }
 
-    public function testPrepareForShowWithInvalidImageUrl()
+    public function testValidateAndConvertRecipeWithInvalidSource()
     {
-        $projectDir = '/tmp';
-        $hostUrl = 'http://localhost';
-        $recipeService = new RecipeService();
         $user = new User();
-        $user->setEmail('test@example.com');
+        $data = [
+            'title' => 'Test Recipe',
+            'ingredients' => 'Ingredient 1, Ingredient 2',
+            'directions' => 'Step 1, Step 2',
+            'link' => 'https://example.com',
+            'source' => 'INVALID_SOURCE',
+            'ner' => 'NER data',
+            'site' => 'https://example.com',
+            'imageUrl' => 'https://example.com/image.jpg'
+        ];
 
-        $recipe = new Recipe();
-        $recipe->setId(1);
-        $recipe->setTitle('Test Recipe');
-        $recipe->setNer(json_encode(['ingredient1', 'ingredient2']));
-        $recipe->setDirections(json_encode(['step1', 'step2']));
-        $recipe->setIngredients(json_encode(['ingredient1', 'ingredient2']));
-        $recipe->setLink('http://example.com');
-        $recipe->setSource('Book');
-        $recipe->setSite('example.com');
-        $recipe->setUser($user);
-        $recipe->setImageUrl('invalid-url');
+        $result = $this->recipeService->validateAndConvertRecipe($data, $user);
 
-        $uiRecipe = $recipeService->prepareForShow($recipe);
+        $this->assertIsString($result);
+        $this->assertStringContainsString('Source have unacceptable value', $result);
+    }
 
-        $this->assertInstanceOf(UiRecipe::class, $uiRecipe);
-        $this->assertEquals(1, $uiRecipe->getId());
-        $this->assertEquals('Test Recipe', $uiRecipe->getTitle());
-        $this->assertEquals(['ingredient1', 'ingredient2'], $uiRecipe->getIngredients());
-        $this->assertEquals(['step1', 'step2'], $uiRecipe->getDirections());
-        $this->assertEquals('http://example.com', $uiRecipe->getLink());
-        $this->assertEquals('Book', $uiRecipe->getSource());
-        $this->assertEquals('ingredient1, ingredient2', $uiRecipe->getNer());
-        $this->assertEquals('example.com', $uiRecipe->getSite());
-        $this->assertEquals($user, $uiRecipe->getUser());
-        $this->assertNull($uiRecipe->getImageUrl());
+    public function testValidateAndConvertRecipeWithMissingUser()
+    {
+        $data = [
+            'title' => 'Test Recipe',
+            'ingredients' => 'Ingredient 1, Ingredient 2',
+            'directions' => 'Step 1, Step 2',
+            'link' => 'https://example.com',
+            'source' => SourceChoices::WEB->name,
+            'ner' => 'NER data',
+            'site' => 'https://example.com',
+            'imageUrl' => 'https://example.com/image.jpg'
+        ];
+
+        $result = $this->recipeService->validateAndConvertRecipe($data, null);
+
+        $this->assertIsString($result);
+        $this->assertEquals('User not found', $result);
+    }
+
+    public function testValidateAndConvertRecipeWithInvalidUrl()
+    {
+        $user = new User();
+        $data = [
+            'title' => 'Test Recipe',
+            'ingredients' => 'Ingredient 1, Ingredient 2',
+            'directions' => 'Step 1, Step 2',
+            'link' => 'invalid-url',
+            'source' => SourceChoices::WEB->name,
+            'ner' => 'NER data',
+            'site' => 'invalid-url',
+            'imageUrl' => 'https://example.com/image.jpg'
+        ];
+
+        $result = $this->recipeService->validateAndConvertRecipe($data, $user);
+
+        $this->assertIsString($result);
+        $this->assertEquals("Link or site is not a valid URL, it is required when source = WEB", $result);
     }
 }

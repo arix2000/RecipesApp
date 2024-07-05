@@ -1,0 +1,899 @@
+{
+	"info": {
+		"_postman_id": "17dc7313-e557-4cf2-829a-fcac9477509e",
+		"name": "RecipesApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27883500"
+	},
+	"item": [
+		{
+			"name": "RecipeDetails",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://0.0.0.0/api/recipe/222",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"path": [
+						"api",
+						"recipe",
+						"222"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "RecipeDetails",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0/api/recipe/222",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"path": [
+								"api",
+								"recipe",
+								"222"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.0"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.20"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 18:37:53 GMT"
+						},
+						{
+							"key": "X-Robots-Tag",
+							"value": "noindex"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"id\": 222,\n        \"title\": \"Apple Sour Cream Coffee Cake\",\n        \"ingredients\": \"[\\\"2 c. flour\\\",\\\"1 tsp. baking soda\\\",\\\"1\\\\/2 tsp. salt\\\",\\\"1\\\\/2 c. butter or margarine\\\",\\\"1 c. sugar\\\",\\\"2 eggs\\\",\\\"1 tsp. vanilla\\\",\\\"1 c. sour cream\\\",\\\"1\\\\/2 c. sugar\\\",\\\"1 tsp. cinnamon\\\",\\\"1\\\\/2 c. chopped nuts\\\",\\\"1 1\\\\/4 c. apples, peeled and thinly sliced\\\"]\",\n        \"directions\": \"[\\\"Combine flour, soda and salt. In another bowl, cream butter and 1 cup sugar until fluffy. Add eggs and vanilla; mix well. Blend in flour mix, alternating with sour cream. In another bowl, mix together apples, cinnamon, 1\\\\/2 cup sugar and nuts. Spread half the batter in a greased 9-inch tube or Bundt pan. Sprinkle half the cinnamon-apple mix over the batter. Spoon in the rest of the batter and sprinkle on the rest of the cinnamon-apple mix. Bake at 375\\\\u00b0 for 40 to 50 minutes. Cool 10 minutes before removing from pan.\\\"]\",\n        \"link\": \"https://www.cookbooks.com/Recipe-Details.aspx?id=26833\",\n        \"source\": \"WEB\",\n        \"ner\": \"[\\\"sour cream\\\",\\\"sugar\\\",\\\"vanilla\\\",\\\"baking soda\\\",\\\"eggs\\\",\\\"cinnamon\\\",\\\"flour\\\",\\\"nuts\\\",\\\"apples\\\",\\\"butter\\\",\\\"salt\\\"]\",\n        \"site\": \"https://www.cookbooks.com\",\n        \"user\": {\n            \"id\": 1,\n            \"firstName\": \"root\",\n            \"lastName\": \"root\",\n            \"email\": \"root@root.com\"\n        },\n        \"imageUrl\": \"https://foodish-api.com/images/rice/rice3.jpg\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Recipes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://0.0.0.0/api/recipes",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"path": [
+						"api",
+						"recipes"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Recipes",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0/api/recipes",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"path": [
+								"api",
+								"recipes"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.0"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.20"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 18:47:42 GMT"
+						},
+						{
+							"key": "X-Robots-Tag",
+							"value": "noindex"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"items\": [\n            {\n                \"id\": 1,\n                \"title\": \"No-Bake Nut Cookies\",\n                \"ingredients\": \"[\\\"1 c. firmly packed brown sugar\\\",\\\"1\\\\/2 c. evaporated milk\\\",\\\"1\\\\/2 tsp. vanilla\\\",\\\"1\\\\/2 c. broken nuts (pecans)\\\",\\\"2 Tbsp. butter or margarine\\\",\\\"3 1\\\\/2 c. bite size shredded rice biscuits\\\"]\",\n                \"directions\": \"[\\\"In a heavy 2-quart saucepan, mix brown sugar, nuts, evaporated milk and butter or margarine.\\\",\\\"Stir over medium heat until mixture bubbles all over top.\\\",\\\"Boil and stir 5 minutes more. Take off heat.\\\",\\\"Stir in vanilla and cereal; mix well.\\\",\\\"Using 2 teaspoons, drop and shape into 30 clusters on wax paper.\\\",\\\"Let stand until firm, about 30 minutes.\\\"]\",\n                \"link\": \"https://www.cookbooks.com/Recipe-Details.aspx?id=44874\",\n                \"source\": \"WEB\",\n                \"ner\": \"bite size shredded rice biscuits, vanilla, brown sugar, nuts, milk, butter\",\n                \"site\": \"https://www.cookbooks.com\",\n                \"user\": {\n                    \"id\": 1,\n                    \"firstName\": \"root\",\n                    \"lastName\": \"root\",\n                    \"email\": \"root@root.com\"\n                },\n                \"imageUrl\": \"https://foodish-api.com/images/dosa/dosa16.jpg\"\n            }\n        ],\n        \"pagination\": {\n            \"current_page\": 1,\n            \"total_items\": 99606,\n            \"items_per_page\": 24,\n            \"total_pages\": 4151\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://0.0.0.0/api/search?query=Fruit Pizza",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"path": [
+						"api",
+						"search"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "Fruit Pizza"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Search",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0/api/search?query=Fruit Pizza",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"path": [
+								"api",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "Fruit Pizza"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.0"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.20"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 18:47:44 GMT"
+						},
+						{
+							"key": "X-Robots-Tag",
+							"value": "noindex"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"items\": [\n            {\n                \"id\": 256,\n                \"title\": \"Fruit Pizza\",\n                \"ingredients\": \"[\\\"1 tube cookie dough\\\",\\\"1 pkg. cream cheese\\\",\\\"1\\\\/3 c. Marshmallow Fluff\\\",\\\"sliced blueberries, peaches, kiwi and strawberries\\\"]\",\n                \"directions\": \"[\\\"Prepare cookie dough in circular baking pan.\\\",\\\"Bake according to directions; cool.\\\"]\",\n                \"link\": \"https://www.cookbooks.com/Recipe-Details.aspx?id=1056162\",\n                \"source\": \"WEB\",\n                \"ner\": \"blueberries, marshmallow fluff, cream cheese\",\n                \"site\": \"https://www.cookbooks.com\",\n                \"user\": {\n                    \"id\": 1,\n                    \"firstName\": \"root\",\n                    \"lastName\": \"root\",\n                    \"email\": \"root@root.com\"\n                },\n                \"imageUrl\": \"https://foodish-api.com/images/butter-chicken/butter-chicken19.jpg\"\n            }\n        ],\n        \"pagination\": {\n            \"current_page\": 1,\n            \"total_items\": 88,\n            \"items_per_page\": 24,\n            \"total_pages\": 4\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "UserRecipes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://0.0.0.0/api/user/recipes/1",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"path": [
+						"api",
+						"user",
+						"recipes",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "UserRecipes",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0/api/user/recipes/1",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"path": [
+								"api",
+								"user",
+								"recipes",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.0"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.20"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 19:10:58 GMT"
+						},
+						{
+							"key": "X-Robots-Tag",
+							"value": "noindex"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"items\": [\n            {\n                \"id\": 1,\n                \"title\": \"No-Bake Nut Cookies\",\n                \"ingredients\": \"[\\\"1 c. firmly packed brown sugar\\\",\\\"1\\\\/2 c. evaporated milk\\\",\\\"1\\\\/2 tsp. vanilla\\\",\\\"1\\\\/2 c. broken nuts (pecans)\\\",\\\"2 Tbsp. butter or margarine\\\",\\\"3 1\\\\/2 c. bite size shredded rice biscuits\\\"]\",\n                \"directions\": \"[\\\"In a heavy 2-quart saucepan, mix brown sugar, nuts, evaporated milk and butter or margarine.\\\",\\\"Stir over medium heat until mixture bubbles all over top.\\\",\\\"Boil and stir 5 minutes more. Take off heat.\\\",\\\"Stir in vanilla and cereal; mix well.\\\",\\\"Using 2 teaspoons, drop and shape into 30 clusters on wax paper.\\\",\\\"Let stand until firm, about 30 minutes.\\\"]\",\n                \"link\": \"https://www.cookbooks.com/Recipe-Details.aspx?id=44874\",\n                \"source\": \"WEB\",\n                \"ner\": \"bite size shredded rice biscuits, vanilla, brown sugar, nuts, milk, butter\",\n                \"site\": \"https://www.cookbooks.com\",\n                \"user\": {\n                    \"id\": 1,\n                    \"firstName\": \"root\",\n                    \"lastName\": \"root\",\n                    \"email\": \"root@root.com\"\n                },\n                \"imageUrl\": \"https://foodish-api.com/images/dosa/dosa16.jpg\"\n            }\n        ],\n        \"pagination\": {\n            \"current_page\": 1,\n            \"total_items\": 99589,\n            \"items_per_page\": 24,\n            \"total_pages\": 4150\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"arek@gmail.com\",\n    \"password\": \"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://0.0.0.0/api/user/login",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "UserRecipes Copy",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"arek@gmail.com\",\n    \"password\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://0.0.0.0/api/user/login",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.0"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.20"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "max-age=0, must-revalidate, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 18:47:57 GMT"
+						},
+						{
+							"key": "X-Robots-Tag",
+							"value": "noindex"
+						},
+						{
+							"key": "Expires",
+							"value": "Fri, 05 Jul 2024 18:47:57 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"id\": 2,\n        \"firstName\": \"Arkadiusz\",\n        \"lastName\": \"Mądry\",\n        \"email\": \"arek@gmail.com\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "AddRecipe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 2,\n    \"title\": \"XXXXXX\",\n    \"ingredients\": \"[\\\"1 large container Cool Whip\\\",\\\"1 large can crushed pineapple\\\",\\\"1 can condensed milk\\\",\\\"3 lemons\\\",\\\"1 c. pecans\\\",\\\"2 graham cracker crusts\\\"]\",\n    \"directions\": \"[\\\"Empty Cool Whip into a bowl.\\\",\\\"Drain juice from pineapple.\\\",\\\"Mix Cool Whip and pineapple.\\\",\\\"Add condensed milk.\\\",\\\"Squeeze lemons, remove seeds and add to Cool Whip and pineapple.\\\",\\\"Chop nuts into small pieces and add to mixture.\\\",\\\"Stir all ingredients together and mix well.\\\",\\\"Pour into a graham cracker crust.\\\",\\\"Use top from crust to cover top of pie.\\\",\\\"Chill overnight.\\\",\\\"Makes 2 pies.\\\"]\",\n    \"link\": \"https://www.cookbooks.com/Recipe-Details.aspx?id=794547\",\n    \"source\": \"WEB\",\n    \"ner\": \"condensed milk, lemons, graham cracker crusts, pecans, pineapple\",\n    \"site\": \"https://www.cookbooks.com\",\n    \"imageUrl\": \"https://foodish-api.com/images/butter-chicken/butter-chicken11.jpg\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://0.0.0.0/api/recipe/add",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"path": [
+						"api",
+						"recipe",
+						"add"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "AddRecipe",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 2,\n    \"title\": \"XXXXXX\",\n    \"ingredients\": \"[\\\"1 large container Cool Whip\\\",\\\"1 large can crushed pineapple\\\",\\\"1 can condensed milk\\\",\\\"3 lemons\\\",\\\"1 c. pecans\\\",\\\"2 graham cracker crusts\\\"]\",\n    \"directions\": \"[\\\"Empty Cool Whip into a bowl.\\\",\\\"Drain juice from pineapple.\\\",\\\"Mix Cool Whip and pineapple.\\\",\\\"Add condensed milk.\\\",\\\"Squeeze lemons, remove seeds and add to Cool Whip and pineapple.\\\",\\\"Chop nuts into small pieces and add to mixture.\\\",\\\"Stir all ingredients together and mix well.\\\",\\\"Pour into a graham cracker crust.\\\",\\\"Use top from crust to cover top of pie.\\\",\\\"Chill overnight.\\\",\\\"Makes 2 pies.\\\"]\",\n    \"link\": \"https://www.cookbooks.com/Recipe-Details.aspx?id=794547\",\n    \"source\": \"WEB\",\n    \"ner\": \"condensed milk, lemons, graham cracker crusts, pecans, pineapple\",\n    \"site\": \"https://www.cookbooks.com\",\n    \"imageUrl\": \"https://foodish-api.com/images/butter-chicken/butter-chicken11.jpg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://0.0.0.0/api/recipe/add",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"path": [
+								"api",
+								"recipe",
+								"add"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.0"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.20"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "max-age=0, must-revalidate, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 18:47:59 GMT"
+						},
+						{
+							"key": "X-Robots-Tag",
+							"value": "noindex"
+						},
+						{
+							"key": "Expires",
+							"value": "Fri, 05 Jul 2024 18:47:59 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"result\": \"OK\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "EditRecipe",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 2,\n    \"title\": \"XXXXXX\",\n    \"ingredients\": \"[\\\"1 large container Cool Whip\\\",\\\"1 large can crushed pineapple\\\",\\\"1 can condensed milk\\\",\\\"3 lemons\\\",\\\"1 c. pecans\\\",\\\"2 graham cracker crusts\\\"]\",\n    \"directions\": \"[\\\"Empty Cool Whip into a bowl.\\\",\\\"Drain juice from pineapple.\\\",\\\"Mix Cool Whip and pineapple.\\\",\\\"Add condensed milk.\\\",\\\"Squeeze lemons, remove seeds and add to Cool Whip and pineapple.\\\",\\\"Chop nuts into small pieces and add to mixture.\\\",\\\"Stir all ingredients together and mix well.\\\",\\\"Pour into a graham cracker crust.\\\",\\\"Use top from crust to cover top of pie.\\\",\\\"Chill overnight.\\\",\\\"Makes 2 pies.\\\"]\",\n    \"link\": \"https://www.cookbooks.com/Recipe-Details.aspx?id=794547\",\n    \"source\": \"OWN\",\n    \"ner\": \"condensed milk, lemons, graham cracker crusts, pecans, pineapple\",\n    \"site\": \"\",\n    \"imageUrl\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://0.0.0.0/api/recipe/edit/99617",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"path": [
+						"api",
+						"recipe",
+						"edit",
+						"99617"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "EditRecipe",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 2,\n    \"title\": \"XXXXXX\",\n    \"ingredients\": \"[\\\"1 large container Cool Whip\\\",\\\"1 large can crushed pineapple\\\",\\\"1 can condensed milk\\\",\\\"3 lemons\\\",\\\"1 c. pecans\\\",\\\"2 graham cracker crusts\\\"]\",\n    \"directions\": \"[\\\"Empty Cool Whip into a bowl.\\\",\\\"Drain juice from pineapple.\\\",\\\"Mix Cool Whip and pineapple.\\\",\\\"Add condensed milk.\\\",\\\"Squeeze lemons, remove seeds and add to Cool Whip and pineapple.\\\",\\\"Chop nuts into small pieces and add to mixture.\\\",\\\"Stir all ingredients together and mix well.\\\",\\\"Pour into a graham cracker crust.\\\",\\\"Use top from crust to cover top of pie.\\\",\\\"Chill overnight.\\\",\\\"Makes 2 pies.\\\"]\",\n    \"link\": \"https://www.cookbooks.com/Recipe-Details.aspx?id=794547\",\n    \"source\": \"OWN\",\n    \"ner\": \"condensed milk, lemons, graham cracker crusts, pecans, pineapple\",\n    \"site\": \"\",\n    \"imageUrl\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://0.0.0.0/api/recipe/edit/99617",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"path": [
+								"api",
+								"recipe",
+								"edit",
+								"99617"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.0"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.20"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "max-age=0, must-revalidate, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 18:48:16 GMT"
+						},
+						{
+							"key": "X-Robots-Tag",
+							"value": "noindex"
+						},
+						{
+							"key": "Expires",
+							"value": "Fri, 05 Jul 2024 18:48:16 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"result\": \"OK\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "DeleteRecipe",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://0.0.0.0/api/recipe/delete/99617",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"path": [
+						"api",
+						"recipe",
+						"delete",
+						"99617"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "DeleteRecipe",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://0.0.0.0/api/recipe/delete/99617",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"path": [
+								"api",
+								"recipe",
+								"delete",
+								"99617"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.0"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.20"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "max-age=0, must-revalidate, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 18:48:21 GMT"
+						},
+						{
+							"key": "X-Robots-Tag",
+							"value": "noindex"
+						},
+						{
+							"key": "Expires",
+							"value": "Fri, 05 Jul 2024 18:48:21 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"result\": \"OK\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Adam\",\n    \"lastName\": \"Markowski\",\n    \"email\": \"adams2ski@gmail.com\",\n    \"password\": \"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://0.0.0.0/api/user/register",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"path": [
+						"api",
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "register",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Adam\",\n    \"lastName\": \"Markowski\",\n    \"email\": \"adams2ski@gmail.com\",\n    \"password\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://0.0.0.0/api/user/register",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.0"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.20"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "max-age=0, must-revalidate, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 18:48:26 GMT"
+						},
+						{
+							"key": "X-Robots-Tag",
+							"value": "noindex"
+						},
+						{
+							"key": "Expires",
+							"value": "Fri, 05 Jul 2024 18:48:26 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"result\": \"OK\"\n    }\n}"
+				}
+			]
+		}
+	]
+}

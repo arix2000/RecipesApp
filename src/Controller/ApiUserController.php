@@ -43,11 +43,11 @@ class ApiUserController extends AbstractController
         $pagination = $recipesPagination->getPagination();
 
         return $this->apiFormatter->formatResponse(
-            $this->pagingService->getPaginatedResponse($pagination, $recipes), Response::HTTP_NOT_FOUND);
+            $this->pagingService->getPaginatedResponse($pagination, $recipes));
     }
 
     #[Route('api/user/login', name: 'api_user_login', methods: ['POST'])]
-    public function apiLogin(Request $request, UserPasswordHasherInterface $passwordHasher)
+    public function apiLogin(Request $request, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 

@@ -16,9 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 class RecipeService
 {
 
-    public function __construct()
-    {
-    }
+    public function __construct(){}
 
     public function getUpdatedRecipe(Recipe $recipe, FormInterface $form, User $user, string $projectDir, string $hostUrl): Recipe|Response
     {
