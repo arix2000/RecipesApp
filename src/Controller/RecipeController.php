@@ -135,19 +135,11 @@ class RecipeController extends AbstractController
         $session->remove('isFromEditPage');
 
         $recipe = $this->recipeRepository->find($id);
-        $ner = implode(", ", json_decode($recipe->getNer()));
-        $directions = json_decode($recipe->getDirections());
-        $ingredients = json_decode($recipe->getIngredients());
-        $imageUrl = $recipe->getImageUrl();
-        $isValidUrl = filter_var($imageUrl, FILTER_VALIDATE_URL) !== false;
-        $recipe->setImageUrl($isValidUrl ? $imageUrl : null);
+        $uiRecipe = $this->recipeService->prepareForShow($recipe);
 
         return $this->render('recipe/details/recipe_details.html.twig',
             [
-                'recipe' => $recipe,
-                'ner' => $ner,
-                'directions' => $directions,
-                'ingredients' => $ingredients,
+                'recipe' => $uiRecipe,
                 'isFromEditPage' => $isFromEditPage,
             ]);
     }

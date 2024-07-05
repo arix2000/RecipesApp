@@ -82,6 +82,16 @@ class Recipe
         ];
     }
 
+    public function setId(int $id): void
+    {
+        $environment = getenv('APP_ENV');
+        if ($environment === false) {
+            $this->id = $id;
+        } else {
+            throw new \Exception('setId is only for test environment: ' . $environment);
+        }
+    }
+
     public function getId(): ?int
     {
         return $this->id;

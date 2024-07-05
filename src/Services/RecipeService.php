@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Entity\Recipe;
 use App\Entity\User;
+use App\Model\UiRecipe;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,5 +58,27 @@ class RecipeService
         }
         $filteredArray = array_values($filteredArray);
         return json_encode($filteredArray);
+    }
+
+    public function prepareForShow(Recipe $recipe): UiRecipe
+    {
+        $ner = implode(", ", json_decode($recipe->getNer()));
+        $directions = json_decode($recipe->getDirections());
+        $ingredients = json_decode($recipe->getIngredients());
+        $imageUrl = $recipe->getImageUrl();
+        $isValidUrl = filter_var($imageUrl, FILTER_VALIDATE_URL) !== false;
+        $recipe->setImageUrl($isValidUrl ? $imageUrl : null);
+        return new UiRecipe(
+            $recipe->getId(),
+            $recipe->getTitle(),
+            $ingredients,
+            $directions,
+            $recipe->getLink(),
+            $recipe->getSource(),
+            $ner,
+            $recipe->getSite(),
+            $recipe->getUser(),
+            $recipe->getImageUrl()
+        );
     }
 }
