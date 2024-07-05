@@ -75,7 +75,7 @@
             <div class="mb-6">
                 {% if recipe.source %}
                     <p class="text-gray-400">{{ 'sourceDetailsLabel'|trans }}<span
-                                class="text-white">{{ recipe.source }}</span></p>
+                                class="text-white">{{ recipe.source|trans }}</span></p>
                 {% endif %}
                 {% if recipe.site %}
                     <a href="{{ recipe.link }}" target="_blank" class="text-gray-400">{{ 'siteDetailsLablel'|trans }}

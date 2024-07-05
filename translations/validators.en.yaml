@@ -1,0 +1,5 @@
+titleIsRequired: 'Title is required'
+ingredientsIsRequired: 'Ingredients is required'
+directionsIsRequired: 'Directions is required'
+linkIsNotUrl: 'This is not a valid URL'
+nerIsRequired: 'Ingredients (no quantities) is required'

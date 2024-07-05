@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Entity\Recipe;
 use App\Entity\User;
 
 class UiRecipe
@@ -27,7 +28,7 @@ class UiRecipe
     private ?string $imageUrl;
 
     public function __construct(
-        int $id,
+        int     $id,
         string  $title,
         array   $ingredients,
         array   $directions,
@@ -49,6 +50,29 @@ class UiRecipe
         $this->site = $site;
         $this->user = $user;
         $this->imageUrl = $imageUrl;
+    }
+
+    public static function from(Recipe $recipe): UiRecipe
+    {
+        $imageUrl = $recipe->getImageUrl();
+        $isValidUrl = filter_var($imageUrl, FILTER_VALIDATE_URL) !== false;
+        $recipe->setImageUrl($isValidUrl ? $imageUrl : null);
+
+        $sourceCaseName = $recipe->getSource();
+        $sourceEnum = constant(SourceChoices::class . "::$sourceCaseName");
+
+        return new self(
+            $recipe->getId(),
+            $recipe->getTitle(),
+            json_decode($recipe->getIngredients()),
+            json_decode($recipe->getDirections()),
+            $recipe->getLink(),
+            $sourceEnum->value,
+            implode(", ", json_decode($recipe->getNer())),
+            $recipe->getSite(),
+            $recipe->getUser(),
+            $recipe->getImageUrl()
+        );
     }
 
     public function getDirections(): array

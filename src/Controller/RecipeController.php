@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Recipe;
 use App\Entity\User;
 use App\Form\RecipeFormType;
+use App\Model\UiRecipe;
 use App\Repository\RecipeRepository;
 use App\Services\PagingService;
 use App\Services\RecipeService;
@@ -135,7 +136,7 @@ class RecipeController extends AbstractController
         $session->remove('isFromEditPage');
 
         $recipe = $this->recipeRepository->find($id);
-        $uiRecipe = $this->recipeService->prepareForShow($recipe);
+        $uiRecipe = UiRecipe::from($recipe);
 
         return $this->render('recipe/details/recipe_details.html.twig',
             [

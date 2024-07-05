@@ -1,4 +1,4 @@
-recipesApp: "PrzepisyApp"
+recipesApp: "RecipesApp"
 search: "Szukaj"
 yourRecipes: "Twoje Przepisy"
 logout: "Wyloguj"
@@ -42,11 +42,9 @@ sourceDetailsLabel: 'Źródło: '
 userDetailsLabel: 'Dodane przez: '
 siteDetailsLablel: 'Strona: '
 detailsContains: 'Zawiera'
-titleIsRequired: 'Tytuł jest wymagany'
-ingredientsIsRequired: 'Składniki są wymagane'
-directionsIsRequired: 'Kroki są wymagane'
-linkIsNotUrl: 'To nie jest prawidłowy URL'
-nerIsRequired: 'Składniki (bez ilości) są wymagane'
 addImageLabel: 'Dodaj obraz'
 fieldRequired: 'To pole jest wymagane'
 emailIsNotValid: 'Proszę wprowadzić prawidłowy adres email.'
+fromWebsite: 'Ze strony internetowej'
+fromBook: 'Z książki'
+userOwn: 'Mój własny przepis'

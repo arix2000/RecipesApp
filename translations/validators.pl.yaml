@@ -1,0 +1,5 @@
+titleIsRequired: 'Tytuł jest wymagany'
+ingredientsIsRequired: 'Składniki są wymagane'
+directionsIsRequired: 'Kroki są wymagane'
+linkIsNotUrl: 'To nie jest prawidłowy URL'
+nerIsRequired: 'Składniki (bez ilości) są wymagane'

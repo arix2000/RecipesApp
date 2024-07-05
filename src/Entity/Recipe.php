@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 class Recipe
@@ -14,25 +15,31 @@ class Recipe
     private ?int $id = null;
 
     #[ORM\Column(length: 1024)]
+    #[Assert\NotBlank(message: 'titleIsRequired')]
     private ?string $title = null;
 
     #[ORM\Column(length: 4096)]
+    #[Assert\NotBlank(message: 'ingredientsIsRequired')]
     private ?string $ingredients = null;
 
     #[ORM\Column(length: 4096)]
+    #[Assert\NotBlank(message: 'directionsIsRequired')]
     private ?string $directions = null;
-
-    #[ORM\Column(length: 1024, nullable: true)]
-    private ?string $link = null;
 
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $source = null;
 
     #[ORM\Column(length: 1024, nullable: true)]
-    private ?string $ner = null;
+    #[Assert\Url(message: 'linkIsNotUrl')]
+    private ?string $link = null;
 
     #[ORM\Column(length: 1024, nullable: true)]
+    #[Assert\Url(message: 'linkIsNotUrl')]
     private ?string $site = null;
+
+    #[ORM\Column(length: 1024)]
+    #[Assert\NotBlank(message: 'nerIsRequired')]
+    private ?string $ner = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
