@@ -8,6 +8,7 @@ use App\Repository\RecipeRepository;
 use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class PagingService
 {
@@ -18,7 +19,12 @@ class PagingService
         $this->recipeRepository = $recipeRepository;
     }
 
-    function getRecipePagination($request, PaginatorInterface $paginator, $bySearchQuery = false): RecipePagination
+    function getRecipePagination(
+        $request,
+        PaginatorInterface $paginator,
+        $bySearchQuery = false,
+        $shouldFormatNer = false,
+    ): RecipePagination
     {
         $query = $this->recipeRepository->createQueryBuilder('r');
 
@@ -29,19 +35,30 @@ class PagingService
             }
         }
 
-        return $this->getPaginatedData($query, $paginator, $request, $searchTerm);
+        return $this->getPaginatedData(
+            $query, $paginator, $request, $searchTerm, $shouldFormatNer);
     }
 
-    function getUserRecipesPagination(int $userId, $request, PaginatorInterface $paginator): RecipePagination
+    function getUserRecipesPagination(
+        int                $userId,
+        Request            $request,
+        PaginatorInterface $paginator,
+        bool               $shouldFormatNer = false,
+    ): RecipePagination
     {
         return $this->getPaginatedData(
             $this->recipeRepository->findAllByUserIdQuery($userId),
             $paginator,
-            $request);
+            $request,
+            shouldFormatNer: $shouldFormatNer);
     }
 
     private function getPaginatedData(
-        QueryBuilder $queryBuilder, $paginator, $request, $searchTerm = ""): RecipePagination
+        QueryBuilder       $queryBuilder,
+        PaginatorInterface $paginator,
+        Request            $request,
+        string             $searchTerm = "",
+        bool               $shouldFormatNer = false): RecipePagination
     {
         $pagination = $paginator->paginate(
             $queryBuilder,
@@ -51,8 +68,10 @@ class PagingService
 
         $recipes = [];
         foreach ($pagination as $recipe) {
-            $readableString = implode(", ", json_decode($recipe->getNer()));
-            $recipe->setNer($readableString);
+            if ($shouldFormatNer) {
+                $readableString = implode(", ", json_decode($recipe->getNer()));
+                $recipe->setNer($readableString);
+            }
             $imageUrl = $recipe->getImageUrl();
             $isValidUrl = filter_var($imageUrl, FILTER_VALIDATE_URL) !== false;
             $recipe->setImageUrl($isValidUrl ? $imageUrl : null);

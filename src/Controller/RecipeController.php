@@ -51,7 +51,7 @@ class RecipeController extends AbstractController
     public function recipes(Request $request, PaginatorInterface $paginator, SessionInterface $session): Response
     {
         $session->set(SessionConst::BACK_ROUTE, 'recipes');
-        $pagination = $this->pagingService->getRecipePagination($request, $paginator)->getPagination();
+        $pagination = $this->pagingService->getRecipePagination($request, $paginator, shouldFormatNer: true)->getPagination();
         if ($request->isXmlHttpRequest()) {
             return $this->render('recipe/recipes_list.html.twig', ['pagination' => $pagination]);
         }
@@ -65,7 +65,8 @@ class RecipeController extends AbstractController
     public function search(Request $request, PaginatorInterface $paginator, SessionInterface $session): Response
     {
         $session->set(SessionConst::BACK_ROUTE, 'search');
-        $recipePagination = $this->pagingService->getRecipePagination($request, $paginator, true);
+        $recipePagination = $this->pagingService->getRecipePagination(
+            $request, $paginator, true, true);
         $pagination = $recipePagination->getPagination();
         $searchTerm = $recipePagination->getSearchTerm();
 

@@ -36,7 +36,8 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        $pagination = $this->service->getUserRecipesPagination($user->getId(), $request, $paginator)->getPagination();
+        $pagination = $this->service->getUserRecipesPagination(
+            $user->getId(), $request, $paginator, shouldFormatNer: true)->getPagination();
 
         if ($request->isXmlHttpRequest()) {
             return $this->render('recipe/recipes_list.html.twig', ['pagination' => $pagination]);
