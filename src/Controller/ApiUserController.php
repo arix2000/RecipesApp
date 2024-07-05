@@ -18,8 +18,8 @@ class ApiUserController extends AbstractController
     private UserRepository $repository;
 
     public function __construct(
-        PagingService $pagingService,
-        ApiFormatter  $apiFormatter,
+        PagingService  $pagingService,
+        ApiFormatter   $apiFormatter,
         UserRepository $repository
     )
     {
@@ -37,6 +37,8 @@ class ApiUserController extends AbstractController
         $recipesPagination = $this->pagingService->getUserRecipesPagination($id, $request, $paginator);
         $recipes = $recipesPagination->getRecipes();
         $pagination = $recipesPagination->getPagination();
-        return $this->apiFormatter->formatResponse($this->pagingService->getPaginatedResponse($pagination, $recipes));
+
+        return $this->apiFormatter->formatResponse(
+            $this->pagingService->getPaginatedResponse($pagination, $recipes), Response::HTTP_NOT_FOUND);
     }
 }

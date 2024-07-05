@@ -28,7 +28,7 @@ class RecipeServiceTest extends TestCase
     {
         $projectDir = '/tmp';
         $hostUrl = 'http://localhost';
-        $recipeService = new RecipeService($projectDir, $hostUrl);
+        $recipeService = new RecipeService();
         $user = new User();
         $user->setEmail('test@example.com');
 
@@ -63,7 +63,7 @@ class RecipeServiceTest extends TestCase
     {
         $projectDir = '/tmp';
         $hostUrl = 'http://localhost';
-        $recipeService = new RecipeService($projectDir, $hostUrl);
+        $recipeService = new RecipeService();
         $user = new User();
         $user->setEmail('test@example.com');
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Constants\SessionConst;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Model\UserRole;
@@ -95,7 +96,7 @@ class UserController extends AbstractController
     #[Route("/switch-locale/{locale}", "switch_locale")]
     public function switchLocale($locale, Request $request): RedirectResponse
     {
-        $request->getSession()->set('_locale', $locale);
+        $request->getSession()->set(SessionConst::LOCALE, $locale);
 
         $referer = $request->headers->get('referer');
         return new RedirectResponse($referer ?: '/');

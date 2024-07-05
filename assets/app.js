@@ -9,3 +9,11 @@
 import './styles/app.css';
 
 import './javascript/pagination'
+
+document.addEventListener('DOMContentLoaded', () => {
+    const path = window.location.pathname;
+    console.log(window.location.pathname)
+    if (!path.includes('/search') && !path.includes('/recipe/') && !path.includes('recipe/edit')) {
+        localStorage.clear();
+    }
+});

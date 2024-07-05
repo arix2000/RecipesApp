@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Constants\RoutesConst;
 use App\Model\RecipePagination;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -21,10 +22,10 @@ class PagingService
     {
         $query = $this->recipeRepository->createQueryBuilder('r');
 
-        $searchTerm = $request->query->get('search', '');
+        $searchTerm = $request->query->get(RoutesConst::SEARCH_PARAM, '');
         if ($bySearchQuery) {
             if (!empty($searchTerm)) {
-                $query = $this->recipeRepository->findByTermQuery($searchTerm);
+                $query = $this->recipeRepository->findAllByTermQuery($searchTerm);
             }
         }
 
@@ -34,7 +35,7 @@ class PagingService
     function getUserRecipesPagination(int $userId, $request, PaginatorInterface $paginator): RecipePagination
     {
         return $this->getPaginatedData(
-            $this->recipeRepository->findByUserQuery($userId),
+            $this->recipeRepository->findAllByUserIdQuery($userId),
             $paginator,
             $request);
     }
