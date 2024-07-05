@@ -47,4 +47,16 @@ class ApiRecipeController extends AbstractController
 
         return $this->apiFormatter->formatResponse($data);
     }
+
+    #[Route('/api/search', name: 'api_search', methods: ['GET'])]
+    public function apiSearchRecipes(Request $request, PaginatorInterface $paginator): JsonResponse
+    {
+        if ($request->query->get('search') === null) {
+            return $this->apiFormatter->formatError("No search parameter provided.");
+        }
+        $recipePagination = $this->pagingService->getRecipePagination($request, $paginator, true);
+        $recipes = $recipePagination->getRecipes();
+        $pagination = $recipePagination->getPagination();
+        return $this->apiFormatter->formatResponse($this->pagingService->getPaginatedResponse($pagination, $recipes));
+    }
 }

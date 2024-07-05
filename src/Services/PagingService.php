@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Model\RecipePagination;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\QueryBuilder;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 class PagingService
@@ -57,5 +58,18 @@ class PagingService
             $recipes[] = $recipe->toMap($recipe);
         }
         return new RecipePagination($recipes, $pagination, $searchTerm);
+    }
+
+    public function getPaginatedResponse(PaginationInterface $pagination, array $items): array
+    {
+        return [
+            'items' => $items,
+            'pagination' => [
+                'current_page' => $pagination->getCurrentPageNumber(),
+                'total_items' => $pagination->getTotalItemCount(),
+                'items_per_page' => $pagination->getItemNumberPerPage(),
+                'total_pages' => ceil($pagination->getTotalItemCount() / $pagination->getItemNumberPerPage()),
+            ],
+        ];
     }
 }

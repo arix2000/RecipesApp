@@ -15,7 +15,7 @@ class ApiFormatter
         ], $statusCode);
     }
 
-    public function formatError(string $message, int $statusCode = Response::HTTP_BAD_REQUEST): JsonResponse
+    public function formatError(string $message, int $statusCode = Response::HTTP_NOT_FOUND): JsonResponse
     {
         return new JsonResponse([
             'status' => $statusCode,

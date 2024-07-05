@@ -92,7 +92,7 @@ class UserController extends AbstractController
     }
 
 
-     #[Route("/switch-locale/{locale}", "switch_locale")]
+    #[Route("/switch-locale/{locale}", "switch_locale")]
     public function switchLocale($locale, Request $request): RedirectResponse
     {
         $request->getSession()->set('_locale', $locale);
