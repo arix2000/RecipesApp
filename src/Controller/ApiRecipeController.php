@@ -10,7 +10,6 @@ use App\Services\ApiFormatter;
 use App\Services\PagingService;
 use App\Services\RecipeService;
 use Knp\Component\Pager\PaginatorInterface;
-use mysql_xdevapi\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +29,7 @@ class ApiRecipeController extends AbstractController
         ApiFormatter     $apiFormatter,
         RecipeRepository $recipeRepository,
         UserRepository   $userRepository,
-        RecipeService $recipeService
+        RecipeService    $recipeService
     )
     {
         $this->pagingService = $pagingService;
@@ -70,9 +69,49 @@ class ApiRecipeController extends AbstractController
     {
         $data = $this->recipeRepository->findOneBy(['id' => $id]);
         if (!$data) {
-            return $this->apiFormatter->formatError("Recipe not found.", Response::HTTP_NOT_FOUND);
+            return $this->getRecipeNotFoundResponse();
         }
         return $this->apiFormatter->formatResponse($data->toMap());
+    }
+
+    private function getRecipeNotFoundResponse(): JsonResponse
+    {
+        return $this->apiFormatter->formatError("Recipe not found.", Response::HTTP_NOT_FOUND);
+    }
+
+    #[Route('api/recipe/delete/{id}', name: 'api_recipe_delete', methods: ['DELETE'])]
+    public function apiDeleteRecipe($id): JsonResponse
+    {
+        $recipe = $this->recipeRepository->find($id);
+
+        if (!$recipe) {
+            return $this->getRecipeNotFoundResponse();
+        }
+        $this->recipeRepository->remove($recipe);
+        return $this->apiFormatter->formatResponse(['result' => 'OK']);
+
+    }
+
+    #[Route('api/recipe/edit/{id}', name: 'api_recipe_edit', methods: ['PUT'])]
+    public function apiEditRecipe(Request $request, $id): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return $this->getInvalidJsonDataResponse();
+        }
+        $recipe = $this->recipeRepository->find($id);
+        if (!$recipe) {
+            return $this->getRecipeNotFoundResponse();
+        }
+        return $this->validateJsonRecipeAndGetJsonResponse($data, function () use ($data, $recipe) {
+            $this->recipeRepository->edit($recipe, $data);
+        });
+    }
+
+    private function getInvalidJsonDataResponse(): JsonResponse
+    {
+        return $this->apiFormatter->formatError("Invalid JSON data.");
     }
 
     #[Route('/api/recipe/add', name: 'api_recipe_add', methods: ['POST'])]
@@ -81,16 +120,23 @@ class ApiRecipeController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            return $this->apiFormatter->formatError("Invalid JSON data.");
+            return $this->getInvalidJsonDataResponse();
         }
 
+        return $this->validateJsonRecipeAndGetJsonResponse($data, function (Recipe $recipe) {
+            $this->recipeRepository->add($recipe);
+        });
+    }
+
+    private function validateJsonRecipeAndGetJsonResponse(array $data, callable $onSuccess): JsonResponse
+    {
         $userId = (string)$data['userId'];
         $user = $this->userRepository->findOneBy(['id' => $userId]);
 
         try {
             $validateResult = $this->recipeService->validateAndConvertRecipe($data, $user);
             if ($validateResult instanceof Recipe) {
-                $this->recipeRepository->add($validateResult);
+                $onSuccess($validateResult);
                 return $this->apiFormatter->formatResponse(['result' => 'OK']);
             } else {
                 return $this->apiFormatter->formatError($validateResult);

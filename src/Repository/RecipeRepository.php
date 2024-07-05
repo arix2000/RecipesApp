@@ -40,4 +40,23 @@ class RecipeRepository extends ServiceEntityRepository
         $this->entityManager->persist($recipe);
         $this->entityManager->flush();
     }
+
+    public function edit(Recipe $recipe, $data): void
+    {
+        $recipe->setTitle($data['title']);
+        $recipe->setIngredients($data['ingredients']);
+        $recipe->setDirections($data['directions']);
+        $recipe->setLink($data['link']);
+        $recipe->setSource($data['source']);
+        $recipe->setNer($data['ner']);
+        $recipe->setSite($data['site']);
+        $recipe->setImageUrl($data['imageUrl']);
+        $this->entityManager->flush();
+    }
+
+    public function remove(Recipe $recipe): void
+    {
+        $this->entityManager->remove($recipe);
+        $this->entityManager->flush();
+    }
 }
