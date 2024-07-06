@@ -4,7 +4,6 @@ npm install
 npm run dev
 docker-compose down
 docker-compose up -d --build
-docker-compose exec app composer install
 docker-compose exec app php bin/console doctrine:schema:drop --force --no-interaction > /dev/null 2>&1
 docker-compose exec app php bin/console doctrine:migrations:version --delete --all --no-interaction > /dev/null 2>&1
 docker-compose exec app php bin/console doctrine:schema:create --no-interaction > /dev/null 2>&1

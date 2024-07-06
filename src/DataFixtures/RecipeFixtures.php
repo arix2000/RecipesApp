@@ -117,7 +117,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
 
                     $manager->persist($recipe);
                     printf("\33[2K\r");
-                    printf("\033[32m    [INFO] Inserting rows: %d / 99592\033[0m", ++$this->insertedRows);
+                    printf("\033[32m    [INFO] Inserting rows: %d / 99593\033[0m", ++$this->insertedRows);
                 }
 
                 $manager->flush();
