@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'emailExits')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -22,19 +22,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[NotBlank(message: "First name cannot be blank.")]
+    #[NotBlank(message: 'thisFieldCannotBeEmpty')]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
-    #[NotBlank(message: "Last name cannot be blank.")]
+    #[NotBlank(message: 'thisFieldCannotBeEmpty')]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
-    #[Email(message: "The email '{{ value }}' is not a valid email.")]
+    #[NotBlank(message: 'thisFieldCannotBeEmpty')]
+    #[Email(message: 'notAnEmail')]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    #[NotBlank(message: "Password cannot be blank.")]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]

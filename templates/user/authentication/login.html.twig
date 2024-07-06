@@ -17,7 +17,7 @@
             {% if app.user %}
                 <div class="mb-3">
                     {{ 'userLoggedIn'|trans({'%email%': app.user.userIdentifier}) }},
-                    <a class="text-muted" href="/logout">{{ 'logoutBtn'|trans }}</a>
+                    <a class="text-muted" href="{{ path('app_logout') }}">{{ 'logoutBtn'|trans }}</a>
                 </div>
             {% endif %}
             <label for="username">{{ 'emailLabel'|trans }}</label>
