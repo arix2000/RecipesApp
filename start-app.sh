@@ -1,5 +1,6 @@
 #!/bin/sh
 echo -e "\033[33m\n [WARNING] Before running this script make sure that docker system service is running\033[0m"
+npm install
 npm run dev
 docker-compose down
 docker-compose up -d --build
