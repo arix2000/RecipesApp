@@ -1,5 +1,6 @@
 #!/bin/sh
-echo -e "\033[33m\n [WARNING] Before running this script make sure that docker system service is running\033[0m"
+echo -e "\033[33m\n [WARNING] Before running this script make sure that docker system service is running and npm is installed\033[0m"
+read -p "Press Enter to continue or CTRL + C to abort"
 npm install
 npm run dev
 docker-compose down
