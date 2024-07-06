@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Translation\LocaleSwitcher;
 
 class RecipeController extends AbstractController
 {

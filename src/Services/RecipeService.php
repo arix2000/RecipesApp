@@ -5,12 +5,8 @@ namespace App\Services;
 use App\Entity\Recipe;
 use App\Entity\User;
 use App\Model\SourceChoices;
-use App\Model\UiRecipe;
-use App\Repository\RecipeRepository;
-use PHPUnit\Util\Exception;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class RecipeService
@@ -18,7 +14,12 @@ class RecipeService
 
     public function __construct(){}
 
-    public function getUpdatedRecipe(Recipe $recipe, FormInterface $form, User $user, string $projectDir, string $hostUrl): Recipe|Response
+    public function getUpdatedRecipe(
+        Recipe        $recipe,
+        FormInterface $form,
+        User          $user,
+        string        $projectDir,
+        string        $hostUrl): Recipe|Response
     {
         $recipe->setUser($user);
         $recipe->setIngredients($this->stringToJsonArray($recipe->getIngredients()));

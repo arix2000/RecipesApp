@@ -5,7 +5,7 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
-/public/recipe/uploads
+/public/recipe/uploads/*
 /var/cache
 /var/log
 /migrations/*
