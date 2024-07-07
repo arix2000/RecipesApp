@@ -2,6 +2,7 @@
 echo -e "\033[33m\n [WARNING] Before running this script make sure that docker system service is running and npm is installed\033[0m"
 npm install
 npm run dev
+mkdir -p ./public/recipe/uploads
 docker compose down
 docker compose up -d --build
 docker compose exec app composer install
