@@ -27,7 +27,7 @@ Follow the instructions on the [Node.js installation page](https://nodejs.org/) 
 
 ### 4. Run the shell script
 
-Navigate to the project directory and run the provided shell script to start the application. This script will use Docker Compose to build and run the necessary containers:
+Navigate to the project directory and run the provided shell script to start the application. If your system requires superuser privileges to run the script, add `sudo` before the following command. This script will use Docker Compose to build and run the necessary containers:
 
 ```bash
 ./start-app.sh
